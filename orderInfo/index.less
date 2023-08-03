@@ -1,0 +1,449 @@
+@import "../../../assets/css/var.less";
+
+.market-oderinfo-bar {
+  background-color: #F5F5F7;
+}
+
+.order-info {
+  background-color: #F5F5F7;
+  text-align: left;
+  position: relative;
+  .safePadding();
+
+  .non-full-screen {
+    &.ios {
+      padding-top: var(--ios-safe-top);
+    }
+
+    &.android {
+      padding-top: var(--android-safe-top);
+    }
+
+    &.pc {
+      padding-top: var(--ios-safe-top);
+    }
+  }
+
+  &.whiteBgNav {
+    .van-nav-bar {
+      background-color: #fff;
+    }
+
+    .safe-head {
+      background-color: #fff;
+    }
+  }
+
+  .order-info-main {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 180px;
+      top: 0;
+      left: 0;
+      background-image: url("./img/orderinfo-bg.png");
+      background-position: center top;
+      background-size: 100%;
+    }
+  }
+
+  &.hideTopBar {
+    .order-status {
+      padding-top: 21px + 46px;
+      height: calc(180px - (var(--ios-safe-top)));
+
+      &.ios {
+        height: calc(180px -(var(--ios-safe-top)));
+      }
+
+      &.android {
+        height: calc(180px - (var(--android-safe-top)));
+      }
+    }
+  }
+
+  .order-status {
+    width: 100%;
+    height: calc(180px - (var(--ios-safe-top) + 46px));
+
+    &.ios {
+      height: calc(180px -(var(--ios-safe-top) + 46px));
+    }
+
+    &.android {
+      height: calc(180px - (var(--android-safe-top) + 46px));
+    }
+
+    padding: 21px;
+    color: #fff;
+    z-index: 1;
+    position: relative;
+    text-align: left;
+
+    .btn-to-action {
+      display: flex;
+      align-items: baseline;
+
+      .count-down-wrapper {
+        display: flex;
+        align-items: baseline;
+
+        .count-down {
+          margin-left: 4px;
+        }
+
+        .text {
+          color: #fff;
+          font-size: 17px;
+        }
+      }
+    }
+
+    .text {
+      width: 80%;
+      font-size: 17px;
+    }
+
+    .sub-text {
+      width: 80%;
+      font-size: 12px;
+    }
+  }
+
+  .panel-wrapper {
+    padding: 0 12px 24px 12px;
+    .enjoy-benefit {
+      margin-top: 8px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 0 12px;
+      margin-top: 8px;
+
+      &.resend-tips {
+        background-color: #FEF0E8;
+        padding: 12px;
+
+        .tips-wrapper {
+          display: flex;
+          color: #FF8B1D;
+
+          .text {
+            color: #666;
+            font-size: 14px;
+
+            .red {
+              color: #F54747;
+            }
+          }
+
+          .icon {
+            margin-right: 6px;
+            flex-shrink: 0;
+          }
+        }
+
+        .action-wrapper {
+          margin-top: 9px;
+          color: #FF8B1D;
+          font-size: 14px;
+          display: flex;
+          justify-content: flex-end;
+
+          .item {
+            display: flex;
+            align-items: baseline;
+
+            .icon {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .refund-wrapper {
+        .cell {
+          padding: 18px 0;
+
+          .cell-value.yellow {
+            color: #FF8B1C;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .price {
+        display: flex;
+        font-size: 11px;
+        align-items: baseline;
+
+        .normal-text {
+          font-size: 14px;
+          color: #999;
+        }
+
+        .origin {
+          color: #999;
+          text-decoration: line-through;
+        }
+
+        .current {
+          color: #333;
+          margin-left: 8px;
+
+          &.red {
+            color: #F54747;
+          }
+
+          .lg {
+            font-size: 16px;
+            font-weight: 600;
+          }
+        }
+      }
+
+      h1 {
+        width: 100%;
+        padding: 12px 0;
+        text-align: left;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .store-name {
+        display: flex;
+        align-items: baseline;
+        padding: 12px 0;
+        width: 100%;
+        font-weight: 400;
+        font-size: 14px;
+        color: #999;
+
+        .name-title {
+          max-width: calc(100% - 17px);
+        }
+
+        .icon {
+          margin-left: 2px;
+        }
+      }
+
+      .product-list {
+        padding: 12px 0;
+
+        .product {
+          display: flex;
+          margin-top: 30px;
+
+          &:first-child {
+            margin-top: 0;
+          }
+
+          .img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid #E5E5E5;
+            flex-shrink: 0;
+            margin-right: 8px;
+            overflow: hidden;
+          }
+
+          .info-wrapper {
+            height: 48px;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .name-wrapper {
+              display: flex;
+              align-items: center;
+              .icon {
+                width: 16px;
+                height: 16px;
+                min-width: 16px;
+                min-height: 16px;
+                margin-right: 3px;
+              }
+              .name {
+                font-size: 14px;
+                font-weight: 600;
+                color: #333;
+                flex: 1;
+              }
+            }
+            .price-wrapper {
+              display: flex;
+              justify-content: space-between;
+              align-items: baseline;
+              .count {
+                line-height: 12px;
+                font-size: 12px;
+                color: #999;
+              }
+            }
+          }
+        }
+
+        .expand-bar {
+          height: 24px;
+          background: #F5F5F7;
+          border-radius: 12px;
+          font-size: 11px;
+          color: #999;
+          text-align: center;
+          line-height: 24px;
+          margin-top: 18px;
+        }
+      }
+
+      .over-weight-tips-label {
+        font-size: 12px;
+        color: #F54747;
+      }
+
+      .other-info {
+        .other-info-item {
+          height: 44px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .left {
+            display: flex;
+            align-items: center;
+            .name {
+              font-size: 14px;
+              color: #333;
+              margin-right: 4px;
+            }
+
+            .sub-info {
+              font-size: 12px;
+              color: #999;
+            }
+
+            .icon {
+              margin-right: 3px;
+            }
+          }
+          .right {
+            &.flex {
+              display: flex;
+              justify-content: right;
+              align-items: center;
+            }
+            .mfood-vip-redpacket-icon-lg {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      .sum-wrapper-top {
+        margin-top: 12px;
+      }
+
+      .sum-wrapper {
+        width: 100%;
+        height: 45px;
+        padding: 8px 0 6px 0;
+        display: flex;
+        justify-content: space-between;
+
+        .left {
+          color: #999;
+          font-size: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .icon {
+            margin-left: 2px;
+            margin-top: -2px;
+          }
+        }
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          font-size: 12px;
+
+          .flex-wrapper {
+            display: flex;
+            align-items: baseline;
+          }
+
+          .sum {
+            margin-left: 12px;
+          }
+
+          .sm {
+            font-size: 11px;
+          }
+
+          .lg {
+            font-size: 24px;
+          }
+
+          .red {
+            color: #F54747;
+          }
+        }
+      }
+
+      .call-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 0;
+
+        .call {
+          font-size: 14px;
+          color: #333;
+          margin-left: 2px;
+        }
+
+        .icon {
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      .cell {
+        padding: 12px 0;
+        font-size: 14px;
+        &.width-title {
+          .van-cell__title {
+            flex: 1.6;
+          }
+        }
+        .van-cell__title {
+          color: #666;
+          flex-shrink: 0;
+        }
+
+        .van-cell__value {
+          color: #333;
+          flex: 3;
+        }
+
+        .btn-copy {
+          margin-left: 6px;
+          color: #FF8B1C;
+        }
+      }
+    }
+  }
+
+  .divider {
+    margin: 0;
+  }
+}

@@ -1,0 +1,151 @@
+<main class="submitComment23">
+  <div>
+    <div :class="safeClass"></div>
+    <NavComponents title="訂單評價" className="type1" />
+  </div>
+  <div class="containBox">
+    <div class="contain" ref="contain">
+      <div class="comment-score-tips" @click="onScoreTipslick" v-if="commentScoreInfo.score && orderInfo.finalAmtn >= commentScoreInfo.orderAmount">
+        <div>{{ $t('member.comment_score_tips', { count: commentScoreInfo.score }) }}</div>
+        <svg-icon icon-class="icon_system_reason" class="icon"></svg-icon>
+      </div>
+      <div class="panel" v-if="[1, 4].includes(orderInfo.deliveryType)">
+        <div style="width: 100%">
+          <div class="space-between-class">
+            <strong>您對騎手滿意嗎？</strong>
+            <div class="small-label-class">已對騎手匿名</div>
+          </div>
+          <div class="line"></div>
+          <van-card>
+            <template #thumb>
+              <svg-icon icon-class="rider_icon" class="productImage2"></svg-icon>
+            </template>
+            <template #title>
+              <div class="name">
+                <span>{{orderRider.riderName}}</span>
+              </div>
+            </template>
+            <template #price>
+              <div class="small-label-class" style="padding-left: 11px;" v-if="orderInfo.deliveryTime">
+                {{orderInfo.deliveryTime}} 左右送達</div>
+            </template>
+            <template #footer>
+              <div class="flex-start-center-class">
+                <span class="rate-label-class">評分</span>
+                <van-rate color="#FA6C17" void-color="#ccc" v-model="formData.riderMark"
+                  :icon="BASE_URL + '/icon_system_star_light.svg'" :void-icon="BASE_URL + '/icon_system_star_dull.svg'"
+                  style="margin:0 14px" />
+                <span class="rate-value-label-class">{{rateMap[formData.riderMark] }}</span>
+              </div>
+              <div v-if="formData.riderMark">
+                <div v-if="formData.riderMark<=3">
+                  <div class="bad-type-label-class">請選擇原因，我們會督促騎手</div>
+                  <pickType key="bad" :data.sync="formData.labelList" :options="badTypeOptions" labelKey="labelContent"
+                    valueKey="labelType" />
+                </div>
+                <div v-if="formData.riderMark>3">
+                  <pickType key="good" :data.sync="formData.labelList" :options="goodTypeOptions"
+                    labelKey="labelContent" valueKey="labelType" />
+                </div>
+                <div class="textarea-class">
+                  <textarea v-on:focus="scrollIntoView" v-model.trim="formData.riderContent" maxlength="1000" rows="3"
+                    :placeholder="reasonPlaceholder(formData.riderMark)" />
+                </div>
+              </div>
+            </template>
+          </van-card>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="space-between-class">
+          <strong>您對商家/菜品滿意嗎？</strong>
+          <div class="small-label-class flex-start-center-class" style="margin-top: 0;">匿名評價 &nbsp;&nbsp;&nbsp;
+            <van-checkbox v-model="formData.aliasType" icon-size="16px" checked-color="#FA6C17"
+              style="margin-left:3px;"></van-checkbox>
+          </div>
+        </div>
+        <div class="line"></div>
+        <van-card>
+          <template #thumb>
+            <van-image width="40" height="40" fit="cover" class="productImage"
+              :src="storeDetail.storeIcon+'?x-oss-process=image/resize,h_80,m_lfit'" lazy-load />
+          </template>
+          <template #tags>
+            <div class="product-name-class">
+              {{storeDetail.storeName}}
+            </div>
+          </template>
+          <template #footer>
+            <div class="flex-start-center-class">
+              <span class="rate-label-class">總體</span>
+              <van-rate color="#FA6C17" void-color="#ccc" v-model="formData.storeMark" style="margin:0 14px"
+                :icon="BASE_URL + '/icon_system_star_light.svg'" :void-icon="BASE_URL + '/icon_system_star_dull.svg'" />
+              <span class="rate-value-label-class" style="padding-left:7px;">{{rateMap[formData.storeMark] }}</span>
+            </div>
+            <div v-if="formData.storeMark ">
+              <div class="flex-start-center-class">
+                <span class="rate-label-class rate-label-small">口味</span>
+                <van-rate color="#FA6C17" void-color="#ccc" v-model="formData.tasteMark" style="margin:0 18px"
+                  :icon="BASE_URL + '/icon_system_star_light.svg'"
+                  :void-icon="BASE_URL + '/icon_system_star_dull.svg'" />
+                <span class="rate-value-label-class rate-value-label-mar">{{rateMap[formData.tasteMark] }}</span>
+              </div>
+              <div class="flex-start-center-class">
+                <span class="rate-label-class rate-label-small">包裝</span>
+                <van-rate color="#FA6C17" void-color="#ccc" v-model="formData.packMark" style="margin:0 18px"
+                  :icon="BASE_URL + '/icon_system_star_light.svg'"
+                  :void-icon="BASE_URL + '/icon_system_star_dull.svg'" />
+                <span class="rate-value-label-class rate-value-label-mar">{{rateMap[formData.packMark] }}</span>
+              </div>
+              <div class="textarea-class">
+                <textarea v-on:focus="scrollIntoView" v-model.trim="formData.storeContent" maxlength="1000" rows="3"
+                  placeholder="對商家菜品、包裝是否滿意，請反饋給商家，您的評價可以鼓勵商家做得更好" />
+              </div>
+
+              <!-- 上传图片 -->
+              <div class="img-box">
+
+                <div class="img-item" v-for="(img, idx) of formData.imgList" :key="img">
+                  <img :src="img|imgCompress" />
+                  <div class="close" @click="removeImg(idx)"></div>
+                </div>
+                <div class="img-item uploadimg" v-if="formData.imgList.length < maxUpload" @click="onUpload">
+                </div>
+              </div>
+
+              <!-- 商品点赞 -->
+              <div class="good-wrap" v-if="productList">
+                <div class="pitem" v-for="(item, idx) of productList" :key="item.orderProductId">
+                  <div class="left">
+                    <img :src="item.productImg|imgCompress" />
+                  </div>
+                  <div class="middle">
+                    <svg-icon v-if="item.isMallCoupon" icon-class="coupon" class="icon" />
+                    <span>{{ item.productName }}</span>
+                  </div>
+                  <div class="right">
+                    <div class="up-box" @click="toggleGood(1, idx)" :class="{active: item.up}">
+                      <div class="touch"></div>
+                      <span>贊</span>
+                    </div>
+                    <div class="down-box" @click="toggleGood(2, idx)" :class="{active: item.down}">
+                      <div class="touch"></div>
+                      <span>踩</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </van-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-wrapper" :class="{disabledBtn: disabledBtn}">
+    <div class="footer" @click="onsubmit">
+      <div>提交</div>
+    </div>
+  </div>
+</main>

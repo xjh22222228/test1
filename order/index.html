@@ -1,0 +1,457 @@
+<main class="market-order">
+  <explain-dialog ref="explain" />
+  <headerNav title="提交訂單" :delta="-1" :allwayShow="true" color="white" />
+
+  <div class="contain mescroll">
+    <div class="containRadius">
+      <div class="panel ">
+        <div class="deliveryCard" v-if="deliveryType === false">
+          <!-- 配送 -->
+          <div class="order-cell" @click="handleOrderAddress()">
+            <div class="address-label ellipsis2">
+              {{($$(marketOrderOther,'selectedAddress','address') + $$(marketOrderOther,'selectedAddress','houseNum'))
+              || '收貨地址'}}
+            </div>
+            <div class="value active">
+              <span>{{$$(marketOrderOther,'selectedAddress','houseNum')?'':'請選擇'}}</span>
+              <svg-icon icon-class="icon_system_arrow_right_min3"></svg-icon>
+            </div>
+          </div>
+          <p class="memberInfo" v-if="$$(marketOrderOther,'selectedAddress','linkman')" style="margin-bottom: 10px;">
+            <span>
+              {{marketOrderOther.selectedAddress.linkman+(marketOrderOther.selectedAddress.gender == 1 ?
+              '（先生）':'（女士）')}}
+              {{'+'+marketOrderOther.selectedAddress.phonePre+' '+marketOrderOther.selectedAddress.phone}}
+            </span>
+          </p>
+
+          <div class="order-cell" style="margin-top:20px" v-show="marketOrderOther.selectedAddress.id"
+            @click="onGetCookTime">
+            <div class="time-label">送達時間</div>
+            <div class="value active">
+              <span>{{marketOrderOther.cookTimeSelectString||'請選擇'}}</span>
+              <svg-icon icon-class="icon_system_arrow_right_min3"></svg-icon>
+            </div>
+          </div>
+          <p class="warningTips">
+            <svg-icon icon-class="icon_system_tips" />
+            <span>無接觸配送，可填寫下方備註，如放門口或前台等位置</span>
+          </p>
+        </div>
+        <!-- 自取 -->
+        <div class="askForCard" v-if="deliveryType === true">
+          <div class="askForData">
+            <div class="address-cell">
+              <div class="label ellipsis2">{{marketStoreDetail.address}}</div>
+              <div class="distance-popup">距離{{$$km(marketStoreDetail.distance)}}</div>
+            </div>
+            <div class="order-cell" style="padding:12px 0">
+              <div class="label">取餐類型</div>
+              <div class="value active" @click="showAskType">
+                <template v-if="askType.type == 1"> 立即自取 </template>
+                <template v-else> 預定自取 </template>
+                <svg-icon v-if="canChangeAskType" icon-class="icon_system_arrow_right_min3">
+                </svg-icon>
+              </div>
+            </div>
+            <div class="order-cell" style="padding:12px 0" @click="onAskforTime">
+              <div class="label">自取時間<span class="required" v-if=" askType.type !== 1">(必選)</span>
+              </div>
+              <div :class="`value ${askType.type == 1|| !marketOrderOther.askforTimeSelectString?'grey':'active'}`">
+                {{ askType.type == 1 ?
+                '商家接單后確認自取時間':(marketOrderOther.askforTimeSelectString||'請選擇')
+                }}
+                <!--                預定自取 -->
+                <svg-icon v-if="askType.type == 2 &&marketOrderOther.askforTimeSelectString"
+                  icon-class="icon_system_arrow_right_min3"></svg-icon>
+              </div>
+            </div>
+            <div class="order-cell center" style="padding:12px 0">
+              <div class="label">預留電話 <span class="area" @click="phone.actionSheetState = true">+{{phone.area}}
+                  <svg-icon icon-class="icon_system_triangle_down" class="svg24" />
+                </span>
+              </div>
+              <div class="value">
+                <van-field v-model="receiverMobile" style="width: 140px"
+                  :right-icon="baseUrl + '/common/svg/icon_system_edit.svg'" placeholder="請輸入手機號">
+                </van-field>
+              </div>
+            </div>
+            <div class="order-cell">
+              <div class="all">
+                <div>
+                  <van-checkbox checked-color="#FA6C17" v-model="marketOrderOther.isPlasticBag" shape="square"
+                    :icon-size="16" @change="onIsPlasticBag">
+                    <p>自備環保袋</p>
+                  </van-checkbox>
+                </div>
+                <div class="reg ellipsis2" @click="onIframe">
+                  <span>勾選該項即表示同意並接受</span>
+                  <span class="link">《到店自取用戶協議》</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <!-- 商品列表 -->
+        <div class="shoppingCart">
+          <div class="store-name-parent">
+            <div class="store-name ellipsis"> {{marketStoreDetail.storeName}} </div>
+            <div class="takaway-icon" v-if="deliveryType">自取</div>
+            <template v-else>
+              <div class="delivery-icon" v-if="$$(marketOrderOther,'cookTimeSelectData','deliveryType') ==1">mFood送
+              </div>
+              <div class="faraway-icon" v-else-if="$$(marketOrderOther,'cookTimeSelectData','deliveryType') ==4">超遠送
+              </div>
+            </template>
+          </div>
+          <div class="cartProductItem" v-for="(product,index) in filterList" :key="index">
+            <van-card>
+              <template #thumb>
+                <van-image fit="cover" :src="product.productImg|imgCompress" />
+              </template>
+              <template #title>
+                <div class="name">
+                  <span class="product-name ellipsis2">
+                    <svg-icon v-if="product.isBuyGift" icon-class="zeng" class="svg24" />
+                    <template v-else-if="product.isDiscount && memberLevel && product.discountMemberPrice != null && product.isDiscountMember">
+                      <vip-icon :product="product" />
+                    </template>
+                    <svg-icon v-else-if="product.isDiscount" icon-class="market-zhe" class="svg24 vertical-middle" />
+                    <svg-icon v-else-if="product.isOldDiscount" icon-class="market-zhe2" class="svg24 vertical-middle" />
+                    <svg-icon v-else-if="product.isSeckill" icon-class="miao" class="svg24 vertical-middle" />
+                    <svg-icon v-else-if="product.isMallCoupon" icon-class="coupon" class="svg24 vertical-middle" />
+                    <svg-icon v-else-if="product.group && product.discountQuantity" icon-class="zu" class="svg24 vertical-middle" />
+                    <svg-icon v-if="product.isMan" icon-class="man" class="svg24 vertical-middle" />
+                    <b>{{product.productName}}</b>
+                  </span>
+                </div>
+              </template>
+              <template #bottom>
+                <span class="quantity">x{{product.quantity}}</span>
+                <span class="product-price">
+                  <span class="discount"
+                    v-if="product.discountPriceTotal || product.isMallCoupon">MOP{{utils.filterSecret(product.discountPriceTotal)}}</span>
+                  <span class="now-price">{{utils.filterSecret(product.totalPrice)}}</span>
+                </span>
+              </template>
+            </van-card>
+          </div>
+          <div class="expend-class" v-if="orderProduct.length>3" @click="expandProduct = !expandProduct">
+            {{expandProduct?'點擊收起':'展開更多'}}
+            <!--            <svg-icon icon-class="mf_icon_arrow_up"-->
+            <!--                      :class="{expend:!expandProduct}" />-->
+          </div>
+        </div>
+        <div class="cell  pd-lr">
+          <!--          <van-cell>-->
+          <!--            <template #title>-->
+          <!--              <div @click="onBoxPrice">-->
+          <!--                <span>餐盒費</span>-->
+          <!--                <svg-icon icon-class="mf_icon_order_explain2"-->
+          <!--                          class="sizeSvg" />-->
+          <!--              </div>-->
+          <!--            </template>-->
+          <!--            <span><span class="unit">MOP</span>{{marketOrderOther.boxPrice}}</span>-->
+          <!--          </van-cell>-->
+          <van-cell title="膠袋費">
+            <template #title>
+              <div class="delivery-class" @click="openExplain(1)">
+                <span class="label">
+                  膠袋費<svg-icon icon-class="mf_icon_order_explain2" class="sizeSvg" />
+                </span>
+              </div>
+            </template>
+            <!-- 配送 -->
+            <span v-if="!deliveryType">
+              <span class="unit">MOP</span>{{!isPlasticBag && marketPackagePrice ? marketPackagePrice : 0}}</span>
+            <!-- 自取 -->
+            <span v-if="deliveryType"><span class="unit">MOP</span>{{!isPlasticBag && marketPackagePrice ?
+              marketPackagePrice : 0}}</span>
+          </van-cell>
+          <!-- 配送费 -->
+          <template v-if="!currentWeightCost.overWeightCannotSend && $$(marketOrderOther,'selectedAddress','id')">
+            <!-- && $$(marketOrderOther,'cookTimeSelectData','deliveryFee') -->
+            <van-cell title="配送費" v-if="!deliveryType " class="long-title">
+              <template #title>
+                <div class="delivery-class" @click="openExplain(2)">
+                  <span class="label">配送費
+                    <svg-icon icon-class="mf_icon_order_explain2" class="sizeSvg" />
+                    <span class="weight-total">（重量：{{currentWeightCost.totalWeight}}kg）</span>
+                  </span>
+                  <!--                <span v-if="enjoyDiscountType && $$(marketOrderOther,'cookTimeSelectData','deliveryFee')"-->
+                  <!--                      class="activity-class ellipsis">（{{enjoyDiscountTypeMap[enjoyDiscountType]}}）</span>-->
+                  <!--                <secondSend />-->
+                </div>
+              </template>
+              <template #default>
+                <span class="origin-class" v-if="!deliveryType && $$(marketOrderOther,'cookTimeSelectData','deliveryFee')
+                    && $$(marketOrderOther,'discountDeliveryFee')">
+                  MOP{{marketOrderOther.cookTimeSelectData.deliveryFee }}</span>
+                <span><span class="unit">MOP</span>{{deliveryPrice || 0}}</span>
+              </template>
+            </van-cell>
+            <!-- <div class="over-weight-tips-label" v-if="!deliveryType && $$(marketOrderOther,'selectedAddress','id')">
+              <span
+                v-if="$$(currentWeightCost,'currentPlan','overWeightCost') || $$(marketOrderOther,'cookTimeSelectData','shippingPriceIncrement')">(</span>
+              <span v-if="$$(marketOrderOther,'cookTimeSelectData','shippingPriceIncrement')">
+                包含特殊時段加收MOP{{$$(marketOrderOther,'cookTimeSelectData','shippingPriceIncrement')}}
+              </span>
+              <span
+                v-if="$$(marketOrderOther,'cookTimeSelectData','shippingPriceIncrement') && $$(currentWeightCost,'currentPlan','overWeightCost')">
+                ;
+              </span>
+              <span v-if="$$(currentWeightCost,'currentPlan','overWeightCost')">
+                總重量/體積{{$$(currentWeightCost,'totalWeight')}}kg因超出{{$$(currentWeightCost,'overBaseWeight')}}kg配送費上調MOP{{$$(currentWeightCost,'currentPlan','overWeightCost')}};
+              </span>
+
+              <span
+                v-if="$$(currentWeightCost,'currentPlan','overWeightCost') || $$(marketOrderOther,'cookTimeSelectData','shippingPriceIncrement')">)</span>
+            </div> -->
+          </template>
+
+          <!-- 平台费 -->
+          <platform-fee @change="getPlatformFee" :store-id="id" :amount="platformFeeAmount" />
+
+          <van-cell title="服務費" v-if="serviceFeePrice">MOP{{serviceFeePrice}}</van-cell>
+        </div>
+        <div class="cell pd-lr flex0">
+          <!--          <van-cell v-if="storeFullGift.on && giftData.fullGift">-->
+          <!--            <template #title>-->
+          <!--              <svg-icon icon-class="icon_zeng"></svg-icon>-->
+          <!--              <span>滿贈活動</span>-->
+          <!--            </template>-->
+          <!--            <template #default>-->
+          <!--              <span class="discount-class font14">{{giftData.fullGift}}{{giftData.qty}}份</span>-->
+          <!--            </template>-->
+          <!--          </van-cell>-->
+          <!--          <van-cell v-if="deliveryType && selfOrderRate != null && isSelfDiscount">-->
+          <!--            <template #title>-->
+          <!--              <svg-icon icon-class="icon_ziqu"></svg-icon>-->
+          <!--              <span>自取單折扣</span>-->
+          <!--              <span @click="onSelfTip"-->
+          <!--                    v-if="!isSelfDiscount">-->
+          <!--                <svg-icon icon-class="mf_icon_order_explain2"-->
+          <!--                          class="sizeSvg" />-->
+          <!--              </span>-->
+          <!--            </template>-->
+          <!--            <template #default>-->
+          <!--              <span class="discount-class"><span class="pre">-MOP</span>{{selfDiscountAmt}}</span>-->
+          <!--            </template>-->
+          <!--          </van-cell>-->
+          <!--          <van-cell v-if="orderFull.amount">-->
+          <!--            <template #title>-->
+          <!--              <svg-icon icon-class="tab_order_manjian"></svg-icon>-->
+          <!--              <span>店鋪滿{{orderFull.limitAmount}}減{{orderFull.amount}}</span>-->
+          <!--            </template>-->
+          <!--            <template #default>-->
+          <!--              <span class="discount-class"><span class="pre">-MOP</span>{{orderFull.amount}}</span>-->
+          <!--            </template>-->
+          <!--          </van-cell>-->
+          <!-- 满减满折 -->
+          <van-cell title="滿減滿折" v-if="disFullAmtn > 0">
+            <template #title>
+              <svg-icon icon-class="market_man"></svg-icon>
+              <span>滿減滿折</span>
+            </template>
+            <template #default>
+              <span class="fullamt"><span class="font11">-MOP</span>{{disFullAmtn}}</span>
+            </template>
+          </van-cell>
+          <van-cell title="商家代金券" @click="onGoVoucher" class="flex-value">
+            <template #title>
+              <svg-icon icon-class="tab_order_quan"></svg-icon>
+              <span>商家代金券</span>
+            </template>
+            <template #default>
+              <span class="un-useful" v-if="!$$(marketStoreVoucherList,'effectiveList').length">暫無可用</span>
+              <span class="effectiveList unselect"
+                v-if="!$$(memberOrderVoucher,'id') && $$(marketStoreVoucherList,'effectiveList').length">
+                {{usefulVoucherCount}}張可用
+              </span>
+              <span class="effectiveList active"
+                v-if="$$(marketStoreVoucherList,'effectiveList').length && $$(memberOrderVoucher,'id')">{{disVoucherAmtn}}
+              </span>
+              <svg-icon icon-class="icon_system_arrow_mini_right"></svg-icon>
+            </template>
+          </van-cell>
+          <van-cell title="平台紅包" @click="onGoRedpack" class="flex-value">
+            <template #title>
+              <svg-icon icon-class="tab_order_redpoket"></svg-icon>
+              <span>平台紅包</span>
+            </template>
+            <template #default>
+              <!-- 暂无可用红包 -->
+              <span class="un-useful" v-if="!$$(marketStoreRedpackList,'effectiveList').length">暫無可用</span>
+              <!-- 組合紅包標籤 -->
+              <div class="normal-tag" v-else-if="memberOrderRedpack.delivery.id && memberOrderRedpack.common.id">{{ $t('COUPON.combo_redpacket') }}</div>
+              <!-- 支付渠道 -->
+              <img class="pay-icon-class" v-else-if="payIconSrc" :src="payIconSrc">
+              <!-- 免配紅包標籤 -->
+              <div class="normal-tag" v-else-if="memberOrderRedpack.delivery.id && !memberOrderRedpack.common.id">{{ $t('COUPON.delivery_redpacket') }}</div>
+              <div class="mfood-vip-redpacket-icon-lg" :class="$i18n.locale"
+                v-else-if="[7,8].includes(memberOrderRedpack.common.sourceType) && !memberOrderRedpack.delivery.id">
+                {{ $t('COUPON.member_red_packet') }}
+              </div>
+              <!-- 未选中红包 -->
+              <span
+                class="effectiveList unselect"
+                v-if="!memberOrderRedpackCount && $$(marketStoreRedpackList,'effectiveList').length">
+                {{usefulRedCount}}張可用 </span>
+              <span
+                class="effectiveList active"
+                v-if="$$(marketStoreRedpackList,'effectiveList').length && memberOrderRedpackCount"
+              >{{ utils.filterSecret(disGiftAmtn + disDeliveryGiftAmtn) }}</span>
+              <svg-icon icon-class="icon_system_arrow_mini_right"></svg-icon>
+            </template>
+          </van-cell>
+          <!-- 消費金 -->
+          <van-cell @click="onGoGold" class="gold">
+            <template #title>
+              <svg-icon icon-class="tab_order_gold"></svg-icon>
+              <span>{{$t('order.gold')}}</span>
+              <span @click.stop="showGoldUseTipsDialog">
+                <svg-icon icon-class="mf_icon_order_explain2" class="sizeSvg" />
+              </span>
+            </template>
+            <template #default>
+              <template v-if="goldUseDataEffectiveList.length">
+                <span class="amount" v-if="useTotal">
+                  <span class="symbol">-MOP</span>
+                  <span class="amount">{{ useGoldAmount }}</span>
+                  <span class="sheets">（{{useTotal}}{{ $tc('gold_item_token', useTotal) }}）</span>
+                </span>
+                <span class="available" v-else>
+                  {{$t('order.availableNum', {num: goldUseDataEffectiveList.length})}}
+                </span>
+              </template>
+              <span class="un-useful" v-else>{{ $t('common.nothingAvailable') }}</span>
+              <svg-icon icon-class="icon_system_arrow_mini_right"></svg-icon>
+            </template>
+          </van-cell>
+          <Gold v-if="goldUseDataEffectiveList.length"></Gold>
+        </div>
+        <!--合計-->
+        <div class="pd-lr">
+          <div class="total cell">
+            <div class="discount-rule"></div>
+            <div v-if="!submitBarLoading" class="price-list">
+              <span class="price-label" v-if="_discountAmt">已優惠<span class="price">MOP{{_discountAmt}}</span>
+              </span>
+              <span class="price-label">小計<span class="amount">{{payAmtOnlyShow>0.1?payAmtOnlyShow:0.1}}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 购买红包开通会员 -->
+      <vipOrderOpen @change="dealVip" v-if="!isVip" />
+      <!-- 超值换购商品列表 -->
+      <!--      <exchange-product-->
+      <!--        ref="exchange"-->
+      <!--        :submit-loading="submitBarLoading"-->
+      <!--        @change="onChangeExchangeProduct"-->
+      <!--        :limit="exchangeLimit"-->
+      <!--      />-->
+
+      <div class="panel">
+        <div class="cell order-other pd-lr">
+          <van-cell title="*如遇缺貨" @click="missProductPopup = true">
+            <template #title>
+              <span style="color:#FF8B1D">*</span>如遇缺貨
+            </template>
+            <div class="missProductList">
+              <div class="ellipsis misslabel" v-if="marketOrderOther.missProductIndex!== -1">
+                {{missProductList[marketOrderOther.missProductIndex] &&
+                missProductList[marketOrderOther.missProductIndex].title}}</div>
+              <span class="un-useful" v-if="marketOrderOther.missProductIndex == -1">未選擇</span>
+              <svg-icon icon-class="icon_system_arrow_mini_right"></svg-icon>
+            </div>
+
+          </van-cell>
+          <van-cell class="remark" title="備註" @click="remarkPopup = true">
+            <span v-if="remarkText">{{remarkText}}</span>
+            <span class="un-useful" v-if="!remarkText">備注要求</span>
+            <svg-icon icon-class="icon_system_arrow_mini_right"></svg-icon>
+          </van-cell>
+          <van-field
+            v-if="marketStoreDetail.isMemberNo"
+            class="member-no"
+            v-model="memberNo"
+            label="商家會員號碼"
+            placeholder="請輸入商家會員號碼"
+            input-align="right"
+            maxlength="100"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="safe-bottom"></div>
+  </div>
+  <!--  下單按鈕-->
+  <van-submit-bar class="orderSubmitBar" :loading="submitBarLoading">
+    <div class="number" :class="{point: submitBarPayAmt <= 0, opacity0: submitBarLoading}">
+      <div class="price ellipsis" v-if="(submitBarPayAmt > 0 && usePointPrice > 0)|| usePointPrice <= 0">
+        <span>{{submitBarPayAmt}}</span>
+        <span class="payment-tips vip" v-if="!isVip && vipPayAmt">{{ $t('order.vip_amt_tips', { amount: vipPayAmt })
+          }}</span>
+      </div>
+      <div class="discounted-amt ellipsis" v-if="submitBarDiscountAmt">
+        <span class="safe-label">已優惠 </span>MOP{{ submitBarDiscountAmt }}
+      </div>
+    </div>
+    <div class="submit-button" slot="button">
+      <!--     配送并且 超重-->
+      <!-- <div class="submit-content" v-if="currentWeightCost.overWeightCannotSend && !deliveryType"
+        @click="showOverWeight">
+        <div class="small-label"> 已超重 </div>
+        <div class="weight-price">{{currentWeightCost.overLimitWeight}}kg</div>
+      </div> -->
+      <!-- v-else -->
+      <div class="submit-content" @click="onSubmit">提交訂單</div>
+    </div>
+  </van-submit-bar>
+  <!-- 選擇收貨地址 -->
+  <orderAddress ref="orderAddress" @success="init" />
+  <!-- 選擇時間 -->
+  <time-select ref="timeSelect" @select-cook-time="onSelectCookTime" @select-askfor-time="onSelectAskforTime" />
+
+  <van-popup :safe-area-inset-bottom="true" class="missProductPopup" v-model="missProductPopup" position="bottom">
+    <h1>如遇缺貨</h1>
+    <div class="list">
+      <div class="count-label" v-for="(item,index) in missProductList" @click="onMissProductIndex(index)">
+        <div>{{item.title}}</div>
+        <svg-icon class="icon-class"
+          :icon-class="index == marketOrderOther.missProductIndex?'radio_check':'radio_normal'">
+        </svg-icon>
+      </div>
+    </div>
+    <div class="remember-me">記住我的選擇下次無需提醒 <van-switch v-model="rememberMissProduct"></van-switch>
+    </div>
+    <div class="cancel" @click="missProductPopup = false">取消</div>
+  </van-popup>
+  <van-popup :safe-area-inset-bottom="true" class="remarkPopup" v-model="remarkPopup" position="right">
+    <headerNav title="備註" :allwayShow="true" :back="remarkBack" />
+    <div class="remark">
+      <div class="content">
+        <van-field v-model="remarkText" :rows="3" :maxlength="50" autosize type="textarea" placeholder="請輸入備註等要求" />
+        <!--        <p>快捷備註</p>-->
+        <!--        <div class="tag">-->
+        <!--          <van-tag v-for="item in remarkTag"-->
+        <!--                   type="primary"-->
+        <!--                   @click="onTag(item)">{{item}}</van-tag>-->
+        <!--        </div>-->
+      </div>
+      <div>
+        <van-button class="remarkButton" block type="info" @click="remarkPopup = false"> 完成 </van-button>
+      </div>
+    </div>
+  </van-popup>
+  <van-action-sheet @select="onActionSheet" v-model="phone.actionSheetState" :actions="phone.actionSheetData"
+    cancel-text="取消" class="action-phone" description="選擇號碼歸屬地" close-on-click-action />
+  <van-action-sheet @select="onAskTypeAction" v-model="askType.actionSheetState" :actions="selfActionSheetData"
+    cancel-text="取消" description="選擇取餐類型" close-on-click-action />
+</main>

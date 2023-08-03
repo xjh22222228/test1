@@ -1,0 +1,76 @@
+.header-location1 {
+  z-index: 9;
+  position: relative;
+  display: flex;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 12px;
+  align-items: center;
+  white-space: nowrap;
+  user-select: none;
+  .larrow {
+    width: 24px;
+    height: 24px;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    .mfood-logo {
+      width: 106px;
+      height: 24px;
+      background-image: url("./title.png");
+      background-size: 100%;
+      margin-left: 3px;
+    }
+  }
+  .title {
+    font-size: 18px;
+    color: #FF8B1C;
+    line-height: 20px;
+    font-weight: bold;
+  }
+  .middle {
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .location-icon {
+      width: 24px;
+      height: 24px;
+      flex: none;
+    }
+    .addrs {
+      font-size: 17px;
+      font-weight: bold;
+      color: #191919;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .right {
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    background-image: url("./arrow-down.png");
+    background-size: 24px;
+  }
+}
+
+// 白色
+.light231 {
+  .safe-top {
+    background-color: transparent !important;
+  }
+  .addrs {
+    color: #fff !important;
+  }
+  .mfood-logo {
+    background-image: url("./title-w.png") !important;
+  }
+  .right {
+    background-image: url("./arrow-down-w.png") !important;
+  }
+}

@@ -1,0 +1,47 @@
+<div class="goods-item9" :id="`item-${data.id}`" :class="{goodsNewUser: newUser}">
+<div class="poster">
+  <div class="iconUrl" v-if="data.iconUrl">
+    <img class="left-top-img" :src="data.iconUrl | imgCompress" />
+  </div>
+
+  <div class="poster-box" @click.stop="goStore(data)">
+    <div class="poster" :style="{backgroundImage: `url(${imgCompress(data.productImg)})`}">
+      <div class="new-bg" v-if="newUser"></div>
+    </div>
+
+    <!-- 售罄 -->
+    <sellout-component v-if="data.sellout" />
+    <!-- 不可售 -->
+    <no-sale-mark v-else-if="isNoSale()" :data="data" />
+  </div>
+
+  <div class="cmain">
+    <div @click.stop="goStore(data)">
+      <div class="title ellipsis2">{{ data.productName }}</div>
+      <div class="desc">{{ data.subhead }}</div>
+    </div>
+
+    <!-- 标签 -->
+    <tag-group @click="clickTag" :data="data" :show-voucher="false" :show-delivery="false"></tag-group>
+
+    <div class="price-box">
+      <span class="unit">MOP</span>
+      <span class="amount">{{ getAmt(data) }}</span>
+      <del class="del" v-if="data.discountCommonPrice != null || data.oldDiscountAmt != null || data.seckillPrice != null">MOP{{ data.storeSalePrice }}</del>
+    </div>
+
+    <!-- 会员价标签 -->
+    <vip-tag :data="data" :type="1" class="mt0" />
+
+    <div class="line"></div>
+
+    <div class="store-box" @click.stop="goStore(data, false)">
+      <div class="left" :style="{backgroundImage: `url(${imgCompress(data.storeLogo)})`}"></div>
+      <div class="right">
+        <div class="stitle">{{ data.storeName }}</div>
+        <marketFee :data="data"></marketFee>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

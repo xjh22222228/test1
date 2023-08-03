@@ -1,0 +1,22 @@
+<div>
+  <openBrowser :visible.sync="openBrowserVisible" />
+  <bottomDownload :label="bottomDownload" v-if="isShare" :params="fullPath" />
+  <div class="tab-bar2" v-else>
+    <div
+      class="tab-item"
+      v-for="(item, idx) of tabList"
+      :key="item.text"
+      :class="{tabActive: idx === activeIdx}"
+      @click="goPage(item)"
+    >
+      <img
+        class="home-icon"
+        :src="showHomeActive ? indexImgGif : tabList[0].iconActive"
+        v-if="idx === 0"
+      />
+
+      <img v-if="idx !== 0 || activeIdx !== 0" :src="idx === activeIdx ? item.iconActive : item.icon" class="icon">
+      <div class="tab-text">{{ (idx === activeIdx && idx === 0) ? '' : item.text }}</div>
+    </div>
+  </div>
+</div>

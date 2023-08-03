@@ -1,0 +1,36 @@
+.normal-home3 {
+  position: relative;
+  &.homeStyle2 {
+    .dynamic-bg {
+      background: initial;
+    }
+  }
+  .dynamic-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 210px;
+    background: linear-gradient(180deg, #FFEC6C 0%, rgba(252, 238, 132, 0) 100%);
+    background-size: cover;
+  }
+  /deep/.safe-top {
+    background-color: transparent;
+  }
+
+  .normal-main {
+    z-index: 5;
+    position: relative;
+  }
+  .marketHomeTopBanner,.marketHomeMidBanner {
+    padding: 0 12px;
+    margin-top: 12px;
+  }
+  .noBannerLantern {
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,254,254,0.1300) 100%);
+    border-radius: 12px;
+    /deep/.c-item {
+      margin-top: 8px !important;
+    }
+  }
+}

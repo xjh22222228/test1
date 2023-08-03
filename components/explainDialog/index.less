@@ -1,0 +1,119 @@
+.market-explain3 {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+
+  .explain-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    .close {
+      margin-top: 20px;
+      width: 40px;
+      height: 40px;
+      background-image: url("~@/views/store/components/recommend-dialog/close.png");
+      background-size: 100%;
+      pointer-events: initial;
+    }
+
+    .explain-main {
+      padding: 26px 19px 28px 26px;
+      width: 295px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      color: #333;
+    }
+
+    .title {
+      margin-bottom: 10px;
+      text-align: center;
+      color: #333333;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .e-item {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+
+      .left {
+        font-size: 14px;
+      }
+
+      .right {
+        font-size: 11px;
+
+        .amt {
+          font-size: 14px;
+        }
+
+        .amt-total {
+          font-size: 36px;
+        }
+      }
+
+      &.item-total {
+        margin-bottom: 7px;
+
+        .left {
+          font-size: 12px;
+        }
+
+        .right {
+          font-weight: bold;
+
+          .amt {
+            font-size: 32px;
+          }
+        }
+      }
+
+      &.delivery-free {
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 8px;
+          right: 3px;
+          height: 1px;
+          border-bottom: 1px dashed #F0F0F0;
+          border-radius: 1px;
+        }
+      }
+    }
+
+    .explain-content {
+      margin-top: 29px;
+      font-size: 14px;
+
+      .ext {
+        text-align: left;
+        color: #333;
+      }
+
+      .ext-item {
+        display: flex;
+        margin-top: 8px;
+        line-height: 20px;
+
+        .eright {
+          text-align: left;
+          flex: 1;
+        }
+      }
+    }
+  }
+}

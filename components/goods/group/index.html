@@ -1,0 +1,22 @@
+<div>
+  <div class="goods-group-main">
+    <div class="goods-group9" ref="parent" :class="{flow2: flow}">
+      <slot
+        name="default"
+        :list="dataList"
+        :loading="loading"
+        :next="next"
+      />
+      <div class="observe-node" ref="node"></div>
+    </div>
+  </div>
+
+  <!-- 到底了 -->
+  <goods-end v-if="!loading && !next && dataList.length > 0" />
+
+  <!-- 加载中 -->
+  <goods-loading v-if="loading" />
+  
+  <!-- 可售时间 -->
+  <StoreTakeoutTimeComponents />
+</div>

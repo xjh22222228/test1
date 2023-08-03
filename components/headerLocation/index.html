@@ -1,0 +1,26 @@
+<div :class="{light231: light}">
+  <div class="safe-top" :class="safeClassName"></div>
+  <div
+    class="header-location1"
+    :class="{'position-sticky': sticky}"
+    :style="{backgroundColor: backgroundColor}"
+  >
+    <div class="left" @click="onBack">
+      <svg-icon
+        v-if="!isAliPay"
+        :icon-class="light ? 'mf_icon_arrow_left_w' : 'mf_icon_arrow_left_b'"
+        class="larrow"
+      />
+      <span class="title" v-if="title">{{ title }}</span>
+      <div class="mfood-logo" v-else></div>
+    </div>
+    <div class="middle" @click="goAddress">
+      <svg-icon
+        :icon-class="light ? 'mf_icon_location_white' : 'mf_icon_location'"
+        class="location-icon" />
+      <van-loading type="spinner" size="24px" v-if="positioning" />
+      <span class="addrs" v-else>{{ address }}</span>
+    </div>
+    <div class="right" @click="goAddress"></div>
+  </div>
+</div>

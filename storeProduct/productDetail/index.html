@@ -1,0 +1,109 @@
+<div class="market-store-product-detail-parent">
+	<div position="right" class="market-product-detail-popup" v-if="marketDetailReady">
+		<navHeader :style="headerStyle" ref="headerCard" class="detail-header" :class="{'active':cardRgba >0.5}">
+				<div v-if="!isAliPay&&!isReadonly" class="market-store-left" slot="left" @click="$router.go(-1)">
+						<svg-icon :icon-class="`${cardRgba>0.5?'mf_icon_arrow_left_b2':'icon_system_arrow_left_b'}`"
+								class="size" />
+				</div>
+				<div slot="mid" style="flex:1">
+						<div class="mid-flex-class" v-if="cardRgba == 1">
+								<div :class="activeTab==1 ? 'active item' : 'item'" @click="scrollTab(1)">
+										<div>商品</div>
+										<div class="bottom" v-if="activeTab==1"></div>
+								</div>
+								<div :class="activeTab==2 ? 'active item' : 'item'" @click="scrollTab(2)">
+										<div>詳情</div>
+										<div class="bottom" v-if="activeTab==2"></div>
+								</div>
+						</div>
+						<!-- <svg-icon icon-class="icon_map_search" class="search-icon"></svg-icon> -->
+				</div>
+				<div class="market-store-right" slot="right">
+						<shareBtn ref="share" @click.native="share"/>
+						<!--                <svg-icon :icon-class="`${cardRgba>0.5?'icon_system_collect_b':'icon_system_collect_w'}`" class="size"></svg-icon>-->
+				</div>
+		</navHeader>
+		<div class="product-detail-main-class" v-if="item&&item.productId" ref="detail" @scroll.passive="onTabScroll">
+			<div class="scroll-top-icon" @click="backTop" v-if="showScrollTop"><img :src="topImg" /></div>
+			<van-swipe @change="imageChange" lazy-render>
+					<van-swipe-item v-for="image in item.productImgs" :key="image">
+							<div class="productImgs-tips" v-if="canNotSell">已下架</div>
+							<van-image @click="seeImage" :src="image|imgCompress" class="product-img" fit="cover" />
+					</van-swipe-item>
+					<template slot="indicator">
+							<div class="custom-indicator">{{ current + 1 }}/{{item.productImgs.length}}</div>
+					</template>
+			</van-swipe>
+			<div class="product-parent">
+					<div class="product-title ellipsis2">                 
+							<img v-if="item.iconUrl" class="icon-class" :src="item.iconUrl">
+							<span>{{item.productName}}</span>
+					</div>
+					<div class="sale-class">{{item.subhead}}</div>
+			</div>
+
+			<div class="price-box" :style="`top:${headerHeight}px;position:sticky`">
+				<div class="price-class">
+					<div class="left">
+						<div class="price-parent">
+							<b class="price">{{ item.isDiscount ? `${item.discountCommonPrice != null ? item.discountCommonPrice : item.defaultSku.skuPrice}` : `${item.productDiscountAmt != null ? item.productDiscountAmt : item.defaultSku.skuPrice}` }}</b>
+							<b class="discount" v-if="item.isDiscount ? item.discountCommonPrice != null : item.productDiscountAmt != null">MOP{{$$(item,'defaultSku','skuPrice')}}</b>
+						</div>
+					</div>
+					<div class="right">
+						<!-- 不可售 -->
+						<no-sale-text-icon v-if="isNoSale(item)" :data="item" />
+						<!-- 单规格 -->
+						<div class="option" v-else-if="!item.sellout">
+							<div class="skus" :class="{'disable':canNotSell}" v-if="!item.quantity&&!isReadonly" @click.stop="fakeStepper">加入購物車</div>
+							<div class="minPurchase" v-if="!item.quantity  && item.minPurchase > 1"
+									@click.stop="fakeStepper">
+									{{item.minPurchase}}份起購</div>
+
+							<van-stepper v-if="item.quantity" class="purchase" @minus="minus" @overlimit="overlimit"
+								@plus="plus" :class="inputClass(item.quantity)" async-change v-model="item.quantity"
+								:disable-input="true" :min="item.minPurchase?item.minPurchase - 1:0" :max="maxLimit" />
+						</div>
+						<div class="sellout" v-else-if="item.sellout">已售罄 </div>
+					</div>
+				</div>
+				<!-- 会员标签 -->
+				<div class="vip-tag-main" v-if="item.discountMemberPrice">
+					<vip-tag :data="item" :type="2" />
+				</div>
+			</div>
+			<!-- 门店优惠信息 -->
+			<store-discount :product="item" @fullclick="goFull(item)" />
+			
+			<!-- 门店名称 -->
+			<div class="market-store-detail">
+					<svg-icon class="icon-class" icon-class="shop-outlined"></svg-icon>
+					<div class="store-detail ellipsis">{{marketStoreDetail.storeName}}</div>
+					<div class="btn-class">
+							<div class="item-class" @click="showStore">
+									<img class="top" :src="locationImg" />
+									<div class="bottom">導航</div>
+							</div>
+							<div class="mid"></div>
+							<div class="item-class" @click="callMerchant">
+									<img class="top" :src="phone" />
+									<div class="bottom">電話</div>
+							</div>
+					</div>
+			</div>
+			<div id="detail-parent" class="detail-parent">詳情</div>
+			<div class="ql-editor content-class" v-if="marketStoreProductDetail.productDetail"
+					v-html="marketStoreProductDetail.productDetail"></div>
+			<div class="ql-editor content-class" v-html="marketStoreProductDetail.commonContent"></div>
+		</div>
+	</div>
+	<van-image-preview v-model:show="showImage" :images="images" :className="`previewClass ${isApp?'app':''}`"
+		:show-index="false" close-icon="arrow-left" :closeable="true" @closed="changeBottom(true)"
+		closeIconPosition="top-left" :overlayStyle="{background:'#000000 !important'}"></van-image-preview>
+		<openBrowser :visible.sync="openBrowserVisible" />
+		<bottomDownload :params="fullPath" :label="bottomDownload" v-if="isShare" />
+	<bottom-cart v-if="showPop&&!showImage" @onSubmit="onSubmit(detailSubmitPage)"></bottom-cart>
+
+	<!-- 可售时间 -->
+  <StoreTakeoutTimeComponents />
+</div>

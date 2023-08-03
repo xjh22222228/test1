@@ -1,0 +1,115 @@
+.market-category-goods {
+  background-color: #F5F5F7;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.market-cgoods3 {
+  &.classifySticky {
+    .mask2 {
+      z-index: 100;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, .6);
+    }
+    .position-sticky,
+    .classify-wrap {
+      z-index: 101 !important;
+      background-color: #fff;
+      .class-box {
+        padding-top: 0;
+      }
+    }
+    .position-sticky {
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+    }
+  }
+  &.showClassify {
+    .icon-arrow {
+      transform: rotate(270deg);
+    }
+  }
+  .market-home-sticky {
+    position: sticky !important;
+  }
+  .classify2 {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    .class-item {
+      position: relative;
+      min-width: 60px;
+      width: 60px;
+      border-right: 10px solid transparent;
+      box-sizing: content-box;
+      text-align: center;
+      overflow: hidden;
+      &.active {
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: -2.5px;
+          transform: translate(50%, -50%);
+          width: 32px;
+          height: 5px;
+          background-color: #FED813;
+        }
+        .class-img {
+          animation: scale .2s linear;
+          border: 2px solid #FED813;
+        }
+      }
+      .class-img {
+        width: 60px;
+        height: 60px;
+        background-size: 60px;
+        border-radius: 50%;
+      }
+      .class-title {
+        z-index: 2;
+        position: relative;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #333333;
+        white-space: nowrap;
+      }
+    }
+  }
+  .classify-wrap {
+    position: relative;
+    text-align: left;
+    padding: 8px 0 8px 13px;
+    background-color: #F5F5F7;
+  }
+  .classify-main {
+    position: relative;
+  }
+  .icon-arrow {
+    text-align: left;
+    margin-left: 18px;
+    transform: rotate(90deg);
+  }
+
+  .goods-wrapper2 {
+    margin-top: 11px;
+    padding: 0 12px 0 12px;
+    .ended {
+      padding-bottom: 46px;
+    }
+  }
+  .sbox {
+    border: 1px solid #FF8B1D !important;
+  }
+}

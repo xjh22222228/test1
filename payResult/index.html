@@ -1,0 +1,27 @@
+<section class="market-pay3">
+  <div class="position-sticky">
+    <div :class="safeClassName"></div>
+    <nav-bar title="支付成功" className="type1" background-color="#fff" :back="onNavBack" />
+  </div>
+
+  <div class="pay-view">
+    <div class="pay-box">
+      <div class="icon-box">
+        <div class="picon"></div>
+      </div>
+      <p class="pay-tip">請稍等，我哋即刻為你安排發貨</p>
+      <div class="pay-btn-box">
+        <div class="pbtn" @click="onNavBack">返回首頁</div>
+        <div class="pbtn" @click="goOrderList">查看訂單</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ptitle" v-if="dataList && dataList.length">猜你喜歡</div>
+
+  <div class="goods-wrapper3">
+    <goods-group @list="dataList = $event" ref="goods" v-slot:default="{list}" :http="getGoods">
+      <goods-item v-for="(item, idx) of list" :key="item.id" :data="item" />
+    </goods-group>
+  </div>
+</section>

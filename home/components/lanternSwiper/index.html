@@ -1,0 +1,33 @@
+<div class="category-main2" :class="{showProgress: showProgress}">
+  <div
+    class="category-swiper2"
+    :class="{
+      layout2: lantern.layoutType === 2,
+      layout2_4: lanternList.length <= 4,
+      layout2_5_8: lanternList.length >= 5 && lanternList.length <= 8,
+      layout2_9_10: lanternList.length >= 9 && lanternList.length <= 10
+    }"
+    v-if="lanternList.length > 3"
+    @scroll="onScroll"
+    ref="container"
+  >
+    <div ref="swipe" class="swip-slide" :style="{width: width}" @scroll="onScroll">
+      <div
+        class="c-item"
+        v-for="(c, idx) of lanternList"
+        :key="idx"
+        @click="onClick(c)"
+      >
+        <div class="c-img" :style="{backgroundImage: `url(${c.__img__})`}"></div>
+        <div class="c-name ellipsis">{{ c.name }}</div>
+      </div>
+      <div class="c-empty" v-if="lantern.layoutType === 1"></div>
+    </div>
+
+    <public-jump ref="jump" />
+  </div>
+
+  <div class="progress" ref="progress" v-if="showProgress">
+    <div class="bar" ref="bar"></div>
+  </div>
+</div>

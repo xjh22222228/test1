@@ -1,0 +1,31 @@
+<div class="goods-horizontal3" v-if="dataList.length > 0 && !over">
+  <div class="goods-top-box" v-for="(item, idx) of dataList" :key="idx">
+    <div class="goods-wrapper" v-for="(item2, idx2) of item" :key="idx2">
+      <div class="goods-item" v-for="p of item2" :key="p.id || p.productId" @click="goNewUserPage(p.id)">
+        <div class="top-bar">
+          <div class="tleft" :style="{backgroundImage: `url(${imgCompress(p.productImg)})`}"></div>
+          <div class="tright">
+            <div class="pname ellipsis2">{{ p.productName }}</div>
+            <div class="bbar">
+              <div class="bleft">
+                <span class="unit">MOP</span>
+                <span class="amt">{{ getAmt(p) }}</span>
+                <del class="discount-amt" v-if="p.discountCommonPrice != null || p.oldDiscountAmt != null || p.seckillPrice != null">MOP{{ p.storeSalePrice }}</del>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="store-bar">
+          <div class="sleft" :style="{backgroundImage: `url(${imgCompress(p.storeLogo)})`}"></div>
+          <div class="sright">{{ p.storeName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-more" @click="goNewUserPage" v-if="showMore">
+    <div class="arrow-icon"></div>
+    <div class="more-txt">查看更多</div>
+  </div>
+</div>

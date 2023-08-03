@@ -1,0 +1,14 @@
+<div class="home-index2">
+  <scroll-bar :down-callback="onDownCallback" ref="goods" class="market-idx2"
+  :style="{backgroundColor: isNewPeople ? '#F5F5F7' : '#F0F0F0'}">
+    <new-zone v-if="isNewPeople" ref="home" />
+    <normal-zone v-else ref="home" />
+
+    <!-- 广告弹窗 -->
+    <window-new-fresh ref="fresh" />
+    <window-active ref="active" />
+    <window-collar-roll ref="roll" />
+  </scroll-bar>
+
+  <tab-bar />
+</div>

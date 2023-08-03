@@ -1,0 +1,78 @@
+@import "../../../../assets/css/var.less";
+
+.market-new-zonepage {
+  background-color: #FFFAF7;
+  .new-home3 {
+    position: relative;
+    .safePadding();
+    &.stickyTop {
+      .header-bar {
+        background-color: #fff;
+      }
+      .safe-head {
+        background-color: #fff;
+      }
+    }
+    .new-main {
+      z-index: 5;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 150px;
+        top: 0;
+        left: 0;
+        background-image: url("./img/bg-top.png");
+        background-position: center top;
+        background-size: 100%;
+      }
+    }
+    .marketHomeTopBanner {
+      padding: 0 12px;
+      margin-top: 12px;
+    }
+
+    .banner-bg {
+      z-index: 6;
+      position: relative;
+      padding-top: 12px;
+      padding-left: 12px;
+      padding-right: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      img {
+        border-radius: 12px;
+        width: 100%;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .overbox {
+    text-align: center;
+    padding-top: 149px;
+    .overimg {
+      width: 122px;
+      height: 104px;
+      pointer-events: none;
+    }
+    .txt {
+      color: #333;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .go-home {
+      margin-top: 38px;
+      width: 80px;
+      height: 32px;
+      border-radius: 4px;
+      border: .5px solid #CCCCCC;
+      color: #666;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

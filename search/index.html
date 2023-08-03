@@ -1,0 +1,61 @@
+<scroll-bar :down-callback="onDownCallback" ref="goods" v-slot:default="{list, next,loading}" :http="getData"
+  class="market-search-scroll" :style="{backgroundColor: showData ? '#F5F5F7' : '#fff'}" @end="onEnd">
+  <main class="searchDetail333">
+    <header style="z-index: 99;">
+      <div :class="safeClassName" style="background-color: #fff;"></div>
+      <!-- 搜索文本框 -->
+      <div class="searchInput">
+        <form action="/">
+          <div class="back" v-if="showBack" @click="onSearchBack">
+            <svg-icon icon-class="mf_icon_arrow_left_b" class="size" />
+          </div>
+          <van-search @focus="onFocus" autofocus :show-action="showAction" v-model="keywords" @search="handlenSearch"
+            @cancel="handlenCancel" shape="round" placeholder="搜索商品" ref="search">
+            <template #left-icon>
+              <svg-icon icon-class="icon_system_search" class="icon-search" />
+            </template>
+          </van-search>
+        </form>
+        <!-- 分類橫向滾動 -->
+      </div>
+      <!-- 搜索條件 -->
+      <div class="searchType" v-if="showData">
+        <van-tabs @click="handleSortType" class="goodTabs" :ellipsis="false" title-active-color="#333"
+          title-inactive-color="rgba(49,46,75,0.5)" line-width="20">
+          <van-tab :title="item.title" :name="item.id" v-for="(item, index) in sortType" :key="item.id">
+            <span class="tab-slot" :class="{up: item.up}" slot="title">
+              {{ item.title }}
+              <div class="arrow-icon" v-if="item.up != null"></div>
+            </span>
+          </van-tab>
+        </van-tabs>
+      </div>
+    </header>
+    <!-- 搜索關鍵詞、歷史記錄 -->
+    <keyword :show-data="showData" @change="onChangeHistory" @search="handlenSearch" v-if="!showData" />
+    <!-- 搜索商品 -->
+    <div class="goods-box3" v-if="showData">
+      <!-- 搜索頁搜索 -->
+      <div class="outdata3" v-if="list.length <= 0 && outData.goods.length <= 0 && !loading">
+        <div class="out-box">
+          <img src="./img/out.png" class="out-icon">
+        </div>
+      </div>
+
+      <goods-item v-for="item of list" :key="item.id" :data="item" />
+      <div class="outdata3" v-if="outData.goods.length > 0">
+        <div class="out-box">
+          <img src="./img/out.png" class="out-icon">
+          <div class="out-txt">超出配送範圍啦~</div>
+        </div>
+        <div class="out-goods">
+          <goods-item v-for="item of outData.goods" :key="item.id" :data="item" />
+        </div>
+      </div>
+      <goods-end v-if="!loading && !next && list.length > 0" />
+    </div>
+  </main>
+
+  <!-- 可售时间 -->
+  <StoreTakeoutTimeComponents />
+</scroll-bar>

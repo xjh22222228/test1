@@ -1,0 +1,48 @@
+<div class="sgoods98">
+  <div class="sgoods-item">
+    <div class="top-info" @click="goStoreProduct(data)">
+      <div class="left">
+        <div class="iconUrl" v-if="data.iconUrl">        
+          <img class="left-top-img" :src="data.iconUrl | imgCompress" />
+        </div>
+        <div class="poster" :style="{backgroundImage: `url(${imgCompress(data.productImg)})`}"></div>
+        <!-- 售罄 -->
+        <div class="sellout3" v-if="data.sellout">
+          <div class="sellout-txt">補貨中</div>
+        </div>
+        <!-- 不可售 -->
+        <no-sale-pure-mark v-else-if="isNoSale()" :data="data" />
+      </div>
+      <div class="right">
+        <div class="pname2">{{ data.productName }}</div>
+        <div class="desc">
+          {{ data.subhead }}
+        </div>
+
+        <div class="amt-box">
+          <div class="aleft">
+            <span class="unit">MOP</span>
+            <span class="amt">{{ data.discountCommonPrice || data.oldDiscountAmt || data.seckillPrice || data.storeSalePrice }}</span>
+            <del class="del" v-if="data.discountCommonPrice != null || data.oldDiscountAmt != null || data.seckillPrice != null">MOP{{ data.storeSalePrice }}</del>
+          </div>
+          <no-sale-text-icon v-if="isNoSale()" :data="data" />
+        </div>
+
+        <!-- 会员价标签 -->
+        <vip-tag :data="data" :type="3" class="mt4" />
+
+        <!-- 标签 -->
+        <tag-group :data="data"></tag-group>
+      </div>
+    </div>
+
+    <div class="store-box" @click="goStore(data.storeId)">
+      <div class="sleft" :style="{backgroundImage: `url(${imgCompress(data.storeLogo)})`}"></div>
+      <div class="smiddle">
+        <div class="sname">{{ data.storeName }}</div>
+        <marketFee :data="data"></marketFee>
+      </div>
+      <div class="sright">{{$$km(data.distance)}}</div>
+    </div>
+  </div>
+</div>

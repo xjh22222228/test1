@@ -1,0 +1,18 @@
+<van-popup :value.sync="showState" @click-overlay="close" overlay-class="z-index-2001" get-container="#pop-main"
+  class="window-active3 z-index-2001">
+  <SwiperBannerComponents ref="activeBanner" v-if="showState" :config.sync="activeBanner" @click="clickBanner"
+    @expose="onExpose" from="超市首頁廣告">
+    <div slot="top" style="flex:1"></div>
+    <div class="svg" slot="bottom" style="flex:1">
+      <div class="swiper-pagination" v-show="activeWindowData.length>1"></div>
+      <div class="flex-center-class mt15" @click="nextTimeShow">
+        <div class="empty-class"></div>
+        <div class="close-box">
+          <img :src="exitImg" class="icon_popup_exit_w" />
+        </div>
+        <div class="empty-class"></div>
+      </div>
+    </div>
+  </SwiperBannerComponents>
+  <PublicJumpComponents ref="activeBannerJump" />
+</van-popup>

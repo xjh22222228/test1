@@ -1,0 +1,63 @@
+
+<div class="normal-home3" :class="{homeStyle2: styleConf.styleType === 2}">
+  <!-- 背景 -->
+  <div
+    class="dynamic-bg"
+    :style="{
+      backgroundImage: styleConf.backgroundImageUrl ? `url(${styleConf.backgroundImageUrl})` : undefined
+    }">
+  </div>
+
+  <sticky-header
+    :class="{'hide-tab': !showStickyHeader}"
+    @back="onBack"
+  >
+    <goods-tab :class="{'hide-tab': !showGoodsTab}" id="header-tab" />
+  </sticky-header>
+
+  <div class="normal-main">
+    <div ref="top">
+      <header-location
+        background-color="transparent"
+        :light="styleConf.styleType === 2"
+        @back="onBack"
+      />
+      <search-bar
+        background-color="transparent"
+        :light="styleConf.styleType === 2"
+      />
+    </div>
+    <div v-for="item of marketComponents" :key="item.id">
+      <!-- 顶通广告 -->
+      <swiper-banner-component
+        v-if="item.id == '1'"
+        v-show="marketBanner.show"
+        ref="marketBanner"
+        :config.sync="marketBanner"
+        from="超市首頁Banner" />
+      <!-- 灯笼 -->
+      <lantern-swiper :class="{noBannerLantern: !marketBanner.show}" v-else-if="item.id == '2'" />
+      <!-- 小灯笼 -->
+      <small-lantern v-else-if="item.id == '3'" />
+      <!-- 中通广告 -->
+      <swiper-banner-component
+        v-else-if="item.id == '5'"
+        v-show="marketHomeMidBanner.show"
+        ref="marketHomeMidBanner"
+        :config.sync="marketHomeMidBanner"
+        :clickType="2"
+        from="超市首頁中通"
+      />
+      <!-- 瓷片區廣告 -->
+      <center-ad v-else-if="item.id == '4'" />
+      <!-- 1.8秒杀 -->
+      <seckill v-else-if="item.id == '7'" />
+      <!-- 附近商家 -->
+      <nearby-store ref="near" v-else-if="item.id == '8'" />
+      <!-- 分组栏 -->
+      <goods-zone ref="goods" v-else-if="item.id == '6'" />
+    </div>
+  </div>
+
+  <history-order-float ref="history" />
+</div>

@@ -1,0 +1,41 @@
+<PolymerizationComponents ref="component" :config.sync="mescroll" class="market-disuseful" @rightClick="onUse"
+  @historyBack="historyBack">
+  <div class="tab-box" :class="[deviceType]">
+    <div @click="changeTab(0)" :class="{active: tabs === 0}">mFood紅包</div>
+    <div @click="changeTab(1)" :class="{active: tabs === 1}">商家代金券</div>
+  </div>
+  <div class="content">
+    <div class="notice" v-if="redPacketList.useLimitMsg && !tabs && redPacketList.showTips">
+      <svg-icon icon-class="icon_notification_bar_notice" class="icon-notice"></svg-icon>
+      <div>{{redPacketList.useLimitMsg}}</div>
+      <svg-icon icon-class="icon_notice_x" class="icon-notice" @click.native="redPacketList.showTips = null"></svg-icon>
+    </div>
+    <div class="notice" v-if="voucherList.useLimitMsg && tabs && voucherList.showTips">
+      <svg-icon icon-class="icon_notification_bar_notice" class="icon-notice"></svg-icon>
+      <div>{{voucherList.useLimitMsg}}</div>
+      <svg-icon icon-class="icon_notice_x" class="icon-notice" @click.native="voucherList.showTips = null"></svg-icon>
+    </div>
+    <div class="voucher" v-if="tabs === 0">
+
+      <div class="normal-list">
+        <template v-for="(item , index) in redPacketList.list">
+          <normalRedPacket :key="index+'-eff'" :disabled="true" :item.sync="item" />
+        </template>
+      </div>
+    </div>
+    <div class="voucher" v-if="tabs === 1">
+
+      <div class="normal-list" style="padding-top:12px;">
+        <template v-for="(item, index) in voucherList.list">
+          <normalVoucher :key="index+'-inva'" :item.sync="item" :disabled="true" />
+        </template>
+      </div>
+    </div>
+  </div>
+  <van-image class="empty" :src="empty" fit="cover" v-if="!redPacketList.list.length && ready&&tabs === 0">
+    <p>暫無可用券</p>
+  </van-image>
+  <van-image class="empty" :src="empty" fit="cover" v-if="!voucherList.list.length && ready&&tabs === 1">
+    <p>暫無可用券</p>
+  </van-image>
+</PolymerizationComponents>

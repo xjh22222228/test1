@@ -1,0 +1,31 @@
+.ended {
+  position: relative;
+  font-size: 11px;
+  color: #CECECE;
+  line-height: 16px;
+  margin: 39px 0 19px 0;
+  text-align: center;
+  .end-span {
+    position: relative;
+    &::after {
+      content: "";
+      width: 80px;
+      height: 1px;
+      background-color: #F0F0F0;
+      position: absolute;
+      top: 50%;
+      left: -95px;
+      transform: translate(0, -1px);
+    }
+    &::before {
+      content: "";
+      width: 80px;
+      height: 1px;
+      background-color: #F0F0F0;
+      position: absolute;
+      top: 50%;
+      right: -95px;
+      transform: translate(0, -1px);
+    }
+  }
+}

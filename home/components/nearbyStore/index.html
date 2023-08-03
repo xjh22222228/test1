@@ -1,0 +1,43 @@
+<!-- 附近商家 -->
+<div class="nearby-store3" v-if="marketHomeStyle.isShow && stores.length > 0">
+  <div class="nearstore-box">
+    <div class="top">
+      <div class="left">附近商家</div>
+      <div class="right" @click="goNearPage">
+        <span>查看全部門店</span>
+        <div class="arrow"></div>
+      </div>
+    </div>
+
+    <div class="nstore-list">
+      <div class="nitem" v-for="item of stores" :key="item.id" @click="goStore(item)">
+        <img :src="item.thumbnail|imgCompress" class="shead">
+        <div class="linear"></div>
+        <div class="nbox">
+          <img :src="item.thumbnailHead|imgCompress" class="store-logo" />
+          <div class="store-name ellipsis2">{{ item.name }}</div>
+
+          <!-- 接受預定 -->
+          <div class="status-box" v-if="item.reserveType && item.openingTime">
+            <div class="left-status">接受預定</div>
+            <span class="right-txt">{{ item.openingTime }}開始配送</span>
+          </div>
+
+          <!-- 已打烊 -->
+          <div class="status-box disabled" v-else-if="!item.businessType && !item.openingTime">
+            <div class="left-status">已打烊</div>
+            <span class="right-txt" v-if="nextDayOpeningTime(item)">{{ nextDayOpeningTime(item) }}</span>
+          </div>
+
+          <!-- 正常狀態 -->
+          <div class="flex-center" v-else>
+            <div :class="`store-v ${item.isReceive?'received':'get'}`" v-if="$$(item,'couponList','length')">
+              {{voucherLabel(item)}}
+            </div>
+            <div class="store-p" v-else>共{{item.productCount||0}}個商品</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

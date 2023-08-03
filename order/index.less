@@ -1,0 +1,1413 @@
+main.market-order {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column;
+  background-color: #F5F5F7FF;
+  padding-bottom: 65px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 191px;
+    background: linear-gradient(129deg, #FFD94D 0%, #FFC740 100%);
+
+  }
+
+  .flex0 {
+    .van-cell__title {
+      flex: initial;
+    }
+  }
+
+  .bottomBorder {
+    width: 100%;
+    border-bottom: 1px solid rgba(49, 46, 75, 0.08);
+  }
+
+  span.required {
+    font-size: 14px;
+    color: #f56262;
+    font-weight: normal;
+  }
+
+  .van-sidebar-item--disabled {
+    display: none;
+  }
+
+
+  .van-switch {
+    margin-left: 8px;
+    width: 53px;
+    height: 30px;
+    background: #cccccc;
+
+    .van-switch__node {
+      top: 2px;
+      left: 1px;
+      width: 26px;
+      height: 26px;
+    }
+
+    &.van-switch--on {
+      background: #FF8B1D;
+
+      .van-switch__node {
+        transform: translateX(24px)
+      }
+    }
+  }
+
+  .contain {
+    flex: 1;
+    z-index: 1;
+    overflow: hidden;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    .safe-bottom {
+      height: 80px;
+      width: 100%;
+    }
+
+    .containRadius {
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      padding-bottom: 80px;
+
+      .panel {
+        margin-top: 8px;
+        box-sizing: border-box;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-flow: column;
+        text-align: left;
+
+        // 上樓提示
+        .memberInfo {
+          display: flex;
+          align-items: center;
+          align-content: flex-start;
+          word-break: break-all;
+          margin-top: 10px;
+
+          span {
+            font-size: 12px;
+            color: #999999;
+          }
+        }
+
+        // 上樓提示
+        .warningTips {
+          display: flex;
+          align-items: center;
+          align-content: flex-start;
+          word-break: break-all;
+          margin-top: 10px;
+
+          .svg-icon {
+            color: #FB985D;
+            font-size: 16px;
+            margin-top: -1px;
+            margin-right: 6px;
+          }
+
+          span {
+            font-size: 12px;
+            color: #FB985D;
+          }
+        }
+
+        // 自取地址距離
+        .distance-popup {
+          font-size: 12px;
+          padding: 0 8px;
+          height: 26px;
+          display: inline-flex;
+          align-items: center;
+          border-radius: 13px;
+          background: #FFFFFFFF;
+          color: #333333FF;
+          position: relative;
+
+          box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+
+          &:before {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            content: '';
+            background: #FFFFFFFF;
+            bottom: -4px;
+            left: calc(50% - 4px);
+            transform: rotate(45deg);
+          }
+        }
+
+        // 自取地址標題
+        .address-cell {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          padding: 20px 0 12px 0;
+          justify-content: space-between;
+          align-items: center;
+
+          .label {
+            flex: 1;
+            font-size: 20px;
+            //margin: 20px 0;
+            font-weight: bold;
+            color: #191919FF;
+          }
+        }
+
+        .order-cell {
+          display: flex;
+          padding: 0;
+          justify-content: space-between;
+          align-items: flex-start;
+
+          &.center {
+            align-items: center;
+          }
+
+          .time-label {
+            color: #333333;
+            font-size: 14px;
+            font-weight: bold;
+          }
+
+          // 自取 預留電話
+          .van-field {
+            padding: 0;
+
+            .van-field__control {
+              text-align: right;
+            }
+
+            .van-field__right-icon {
+              color: #333333FF;
+            }
+          }
+
+          // 環保袋
+          .all {
+            padding: 12px 0 8px 0;
+            width: 100%;
+            border-top: 0.5px solid #F0F0F0FF;
+          }
+
+          .van-checkbox {
+            .van-checkbox__icon {
+              .van-icon-success {
+                border-radius: 4px;
+                overflow: hidden;
+              }
+
+            }
+
+            p {
+              line-height: 20px;
+              font-size: 14px;
+              color: #333333FF;
+            }
+          }
+
+          // 協議
+          .reg {
+            margin-top: 6px;
+            width: 100%;
+            font-size: 12px;
+            padding-left: 24px;
+            display: inherit;
+            color: #999999FF;
+
+            span.link {
+              color: #FA6C17;
+            }
+          }
+
+          .address-label {
+            flex: 1;
+            font-size: 17px;
+            //line-height: 20px;
+            font-weight: bold;
+            color: #333333FF;
+            display: inline-flex;
+            align-items: center;
+
+            .required {
+              color: #F54747FF;
+            }
+
+            .area {
+              font-weight: normal;
+              display: inline-flex;
+              align-items: center;
+
+              &:before {
+                content: '';
+                border-left: 1px solid #312E4B33;
+                margin: 0 10px;
+              }
+
+              .svg24 {
+                width: 10px;
+                height: 10px;
+                margin-left: 4px;
+              }
+            }
+          }
+
+          .label {
+            flex: 1;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: bold;
+            color: #333333FF;
+            display: inline-flex;
+            align-items: center;
+
+            .required {
+              color: #F54747FF;
+            }
+
+            .area {
+              font-weight: normal;
+              display: inline-flex;
+              align-items: center;
+
+              &:before {
+                content: '';
+                border-left: 1px solid #312E4B33;
+                margin: 0 10px;
+              }
+
+              .svg24 {
+                width: 10px;
+                height: 10px;
+                margin-left: 4px;
+              }
+            }
+          }
+
+          .value {
+            margin-left: 10px;
+            flex-shrink: 0;
+            font-size: 14px;
+            line-height: 20px;
+            display: flex;
+            align-items: center;
+
+            &.active {
+              color: #4F7CAF;
+
+              svg {
+                //color: #FA6C17FF;
+              }
+            }
+
+            &.grey {
+              color: #999999FF;
+
+              >svg {
+                color: #999999FF;
+              }
+            }
+
+            >svg {
+              font-size: 16px;
+              margin-top: 2px;
+            }
+          }
+        }
+
+        // 配送模塊
+        .deliveryCard {
+          padding: 12px;
+        }
+
+        // 自取模塊
+        .askForCard {
+          width: 100%;
+          position: relative;
+          overflow: hidden;
+          background-image: url("~@/assets/images/bg_restaurant_map@2x.png");
+          background-repeat: no-repeat;
+          background-size: 100% 88px;
+          background-position: top left;
+
+          .askForData {
+            padding: 0 12px;
+            z-index: 1;
+          }
+        }
+
+        // 商品模塊
+        .shoppingCart {
+          padding: 12px;
+
+          .store-name-parent {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .store-name {
+              flex: 1;
+              font-size: 14px;
+              color: #999999FF;
+            }
+
+            .delivery-icon {
+              margin-left: 10px;
+              flex-shrink: 0;
+              width: 63px;
+              text-align: center;
+              height: 16px;
+              line-height: 16px;
+              font-size: 11px;
+              color: #FF8B1D;
+              background: #FEF0E8;
+              border-radius: 4px;
+            }
+
+            .faraway-icon {
+              margin-left: 10px;
+              flex-shrink: 0;
+              width: 63px;
+              text-align: center;
+              height: 16px;
+              line-height: 16px;
+              font-size: 11px;
+              background: #EFF9F1;
+              border-radius: 4px;
+              color: #64C879;
+            }
+
+            .takaway-icon {
+              margin-left: 10px;
+              flex-shrink: 0;
+              width: 63px;
+              text-align: center;
+              height: 16px;
+              line-height: 16px;
+              font-size: 11px;
+              background: #F5F5F7;
+              border-radius: 4px;
+              color: #999999;
+            }
+          }
+
+
+          .cartProductItem {
+            margin-bottom: 30px;
+
+            &:last-child {
+              margin-bottom: 18px;
+            }
+
+            // 商品
+            .van-card {
+              padding: 0;
+              margin: 0 0 12px;
+              background-color: transparent;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+
+              // 商品名稱
+              .name {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                .product-name {
+                  color: #333333;
+                  font-size: 14px;
+                  font-weight: bold;
+                  padding-right: 17px;
+                  word-break: break-all;
+                  .svg24 {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 3px;
+                    vertical-align: middle;
+                  }
+                  b {
+                    vertical-align: middle;
+                  }
+                }
+              }
+              .product-price {
+                .discount {
+                  font-size: 11px;
+                  font-weight: normal;
+                  margin: 0 5px;
+                  color: #999999;
+                  text-decoration: line-through;
+                }
+                .now-price {
+                  font-size: 16px;
+                  font-weight: bold;
+                  flex-shrink: 0;
+
+                  &:before {
+                    content: 'MOP';
+                    font-size: 11px;
+                  }
+                }
+              }
+
+              // 商品圖片
+              .van-card__thumb {
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
+                overflow: hidden;
+                border: 1px solid #E5E5E5;
+                overflow: hidden;
+                .van-image {
+                  width: 100%;
+                  height: 100%;
+                  img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 8px;
+                  }
+                }
+              }
+
+              .van-card__content {
+                min-height: inherit;
+                & > div {
+                  display: flex;
+                  justify-content: space-between;
+                }
+              }
+
+              .van-card__bottom {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .quantity {
+                  font-size: 12px;
+                  color: #999999FF;
+                }
+              }
+              .gift-product {
+                font-size: 12px;
+                color: #FF8B1D;
+                display: flex;
+                align-items: center;
+                .arrow {
+                  width: 16px;
+                  height: 16px;
+                }
+              }
+              .attr {
+                font-size: 12px;
+                line-height: 1.2;
+                color: #999999;
+                display: flex;
+                flex-flow: wrap;
+
+                b {
+                  &::after {
+                    content: '、';
+                  }
+                  &:last-child::after {
+                    display: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+
+        // 訂單明細
+        .cell {
+          .over-weight-tips-label {
+            font-size: 12px;
+            color: #F54747;
+          }
+
+          .discount-class {
+            color: #F54747FF;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.2;
+            display: inline-flex;
+            align-items: flex-end;
+
+            .pre {
+              font-size: 11px;
+              //font-weight: normal;
+              margin-bottom: 2px;
+            }
+          }
+          .van-cell {
+            .normal-tag {
+              font-weight: 400;
+              color: #F54B4A;
+              font-size: 11px;
+              background: #F8F4EA;
+              border-radius: 9px 9px 0px 9px;
+              border: 1px solid #EEC374;
+              padding: 0 6px;
+              height: 20px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: 6px;
+              margin-bottom: 4px;
+            }
+          }
+
+          .van-cell::after {
+            display: none;
+          }
+
+          .van-cell.long-title {
+            .delivery-class {
+              display: flex;
+              align-items: center;
+
+              .label {
+                flex-shrink: 0;
+
+                .weight-total {
+                  color: #CCCCCC;
+                  font-size: 12px;
+                }
+              }
+            }
+
+            display: flex;
+            justify-content: space-between;
+
+            .van-cell__title {
+              width: 200px;
+              flex: none;
+              -webkit-flex: none;
+            }
+          }
+
+          // 其他訂單信息
+          &.order-other {
+            .van-cell__title {
+              font-size: 14px;
+              font-weight: bold;
+              margin-right: 10px;
+              flex-shrink: 0;
+              flex: none;
+              width: 70px;
+            }
+
+            .van-cell__value {
+              font-size: 14px;
+              font-weight: normal;
+            }
+
+            .missProductList {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              overflow: hidden;
+
+              .misslabel {
+                max-width: 90%;
+              }
+
+              svg {
+                flex-shrink: 0;
+              }
+            }
+            .member-no {
+              .van-cell__title {
+                flex: 0.6;
+              }
+            }
+          }
+
+          .van-cell__title {
+            font-size: 14px;
+            color: #333333FF;
+            flex-shrink: 0;
+
+            .svg-icon {
+              font-size: 16px;
+              margin-right: 4px;
+            }
+
+            .activity-class {
+              color: #F54747FF;
+              font-size: 12px;
+            }
+
+            .sizeSvg {
+              margin-left: 4px;
+            }
+          }
+
+          .van-cell__value {
+            font-size: 16px;
+            color: #333333FF;
+            font-weight: bold;
+            display: initial;
+            flex-shrink: 0;
+
+            .vip-red-class {
+              width: 76px;
+              height: 20px;
+              margin-bottom: 2px;
+              margin-right: 8px;
+            }
+            .pay-icon-class {
+              width: 100px;
+              height: 20px;
+              margin-bottom: 2px;
+              margin-right: 8px;
+              border-radius: 4px;
+              overflow: hidden;
+            }
+
+            span.effectiveList {
+
+              &.unselect {
+                font-size: 11px;
+                border-radius: 4px;
+                background: #F3443D;
+                color: #ffFFFF;
+                font-weight: normal;
+                padding: 0 4px;
+                height: 20px;
+                line-height: 20px;
+              }
+
+              &.active {
+                color: #F54747;
+                font-size: 16px;
+                font-weight: bold;
+
+                &:before {
+                  content: '-MOP';
+                  font-size: 11px;
+                }
+              }
+            }
+            .fullamt {
+              color: #F54747;
+            }
+
+            // 不可用暫無
+            .un-useful {
+              font-size: 14px;
+              color: #999999;
+              font-weight: normal;
+              width: 100%;
+              text-align: right;
+            }
+
+            .unit {
+              font-size: 11px;
+            }
+
+            .van-cell--clickable {
+              .van-cell__value {
+                font-size: 14px;
+                color: rgba(49, 46, 75, 0.5);
+              }
+
+              // 更多
+              .van-cell__right-icon {
+                color: rgba(49, 46, 75, 0.5);
+                font-size: 14px;
+              }
+            }
+          }
+          .van-cell {
+            &.flex-value {
+              .van-cell__value {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+              }
+              .un-useful {
+                width: auto;
+              }
+            }
+          }
+          // 底部總價
+          &.total {
+            padding: 0 0 12px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            border-top: 1px solid #F0F0F0;
+
+            .discount-rule {
+              color: #999999;
+              font-size: 12px;
+            }
+
+            .price-list {
+              display: flex;
+              align-items: flex-end;
+            }
+
+            .price-label {
+              color: #333333FF;
+              font-size: 12px;
+              display: flex;
+              align-items: flex-end;
+
+              .price {
+                color: #F54747FF;
+                font-weight: bold;
+                margin: 0 12px 0 2px;
+              }
+
+              .amount {
+                color: #333333FF;
+                font-weight: bold;
+                font-size: 24px;
+                transform: translateY(5px);
+                display: flex;
+                align-items: flex-end;
+
+                &:before {
+                  content: 'MOP';
+                  font-size: 12px;
+                  margin: 0 2px 5px 4px;
+                }
+              }
+            }
+          }
+        }
+
+        // 展開收起
+        .expend-class {
+          margin-top: 18px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #999999;
+          font-size: 12px;
+          height: 24px;
+
+          border-radius: 12px;
+          background: #F5F5F7;
+
+          .expend {
+            transform: rotate(180deg);
+          }
+        }
+
+        .pd-lr {
+          padding: 0 12px;
+        }
+      }
+
+      .van-cell {
+        padding: 12px 0;
+
+        .origin-class {
+          margin-right: 2px;
+          color: #999999;
+          font-size: 11px;
+          font-weight: normal;
+          text-decoration: line-through;
+        }
+
+        .point.van-checkbox {
+          justify-content: flex-end;
+        }
+        // 消費金
+        &.gold {
+          .van-cell__value {
+            height: 24px;
+          }
+          .available {
+            font-size: 14px;
+            color: #F54747;
+            font-weight: normal;
+          }
+          .amount {
+            font-size: 11px;
+            color: #F54747;
+            font-weight: initial;
+            .amount {
+              font-size: 16px;
+              font-weight: bold;
+            }
+          }
+        }
+        // 積分
+        &.mcoin {
+          .recommend-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #F77474 0%, #F93A4A 100%);
+            font-size: 11px;
+            color: white;
+            width: 32px;
+            height: 16px;
+            line-height: 16px;
+            border-radius: 4px;
+            text-align: center;
+          }
+
+          .pointChecbox {
+            display: inline-flex;
+            align-items: center;
+
+            &.pick {
+              font-size: 16px;
+              line-height: 1.2;
+              font-weight: bold;
+              color: #F54747;
+
+              &:before {
+                margin-top: 2px;
+                content: '-MOP ';
+                font-size: 11px;
+              }
+            }
+
+            &.un-pick {
+              font-size: 16px;
+              line-height: 1.2;
+              color: #999999;
+              font-weight: normal;
+            }
+
+            >span {
+              margin-right: 4px;
+            }
+
+            .van-checkbox__icon {
+              font-size: 16px;
+            }
+          }
+        }
+
+        &.pointTips {
+          padding: 0 8px;
+          height: 40px;
+          overflow: inherit;
+          border-radius: 8px;
+          box-sizing: border-box;
+          background: rgba(250, 108, 23, 0.1);
+          position: relative;
+          border: 1px solid rgba(250, 108, 22, 0.5);
+
+          &.disabled {
+            border: 0;
+            background: #F0F0F0;
+
+            .x-point {
+              width: 10px;
+              height: 10px;
+              background: #F0F0F0;
+              border: 0;
+
+              &:after {
+                background: #F0F0F0;
+                content: ' ';
+                width: 100%;
+                height: 100%;
+                position: absolute;
+              }
+            }
+
+            p {
+              color: #333333;
+              font-weight: normal;
+            }
+
+            div.usePoint {
+              height: 40px;
+              display: flex;
+              align-items: center;
+              align-content: center;
+              justify-content: space-between;
+
+              span:first-child {
+                color: #333333;
+              }
+            }
+
+          }
+
+          .van-cell__value {
+            overflow: inherit;
+          }
+
+          .x-point {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-top: 1px solid rgba(250, 108, 22, 0.5);
+            border-left: 1px solid rgba(250, 108, 22, 0.5);
+            position: absolute;
+            transform: rotateZ(45deg);
+            z-index: 100;
+            top: -6px;
+            left: 20px;
+
+            &:after {
+              background: rgba(250, 108, 22, 0.1);
+              content: ' ';
+              width: 100%;
+              height: 100%;
+              position: absolute;
+            }
+          }
+
+          p {
+            font-size: 12px;
+            color: #FA6C16;
+            line-height: 40px;
+            font-weight: bold;
+          }
+
+          div.usePoint {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 12px;
+              color: #FA6C16;
+              font-weight: bold;
+              line-height: 16px;
+              padding-right: 16px;
+
+              .sizeSvg {
+                font-size: 16px;
+                margin-left: 16px;
+              }
+            }
+
+            span:last-child {
+              font-size: 14px;
+              font-weight: bold;
+              color: #333333FF;
+            }
+          }
+        }
+
+        &::after {
+          left: 0;
+          right: 0;
+        }
+      }
+    }
+  }
+
+  .remark {
+    .van-cell__title {
+      flex: initial;
+    }
+
+    .van-cell__value {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  // 手機號碼前缀
+  .action-phone {
+    border-radius: 12px 12px 0 0;
+
+    .van-action-sheet__description {
+      color: #999999FF;
+    }
+
+    .van-action-sheet__item {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 20px;
+
+      .van-action-sheet__name {
+        font-size: 17px;
+        color: #333333FF;
+      }
+
+      .van-action-sheet__subname {
+        font-size: 17px;
+        color: #333333FF;
+        margin: 0;
+      }
+    }
+
+    .van-action-sheet__gap {
+      display: none;
+    }
+
+    .van-action-sheet__cancel {
+      display: none;
+    }
+  }
+
+  .missProductPopup {
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 12px 12px 0 0;
+    max-height: 55%;
+    display: flex;
+    flex-flow: column;
+
+    h1 {
+      font-size: 14px;
+      text-align: center;
+      color: #999999FF;
+      padding: 18px 20px;
+      border-bottom: 1px solid #F0F0F0FF;
+      flex-shrink: 0;
+      font-weight: normal;
+    }
+
+    .remember-me {
+      color: #333333;
+      font-size: 14px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .list {
+      flex: 1;
+      overflow: auto;
+
+      .count-label {
+        font-size: 14px;
+        padding: 18px 16px 18px 25px;
+        border-top: 1px solid #F0F0F0;
+        color: #333333FF;
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+
+        .icon-class {
+          flex-shrink: 0;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .cancel {
+      border-top: 8px solid #F5F5F7FF;
+      padding: 17px;
+    }
+
+  }
+
+
+  // 提交訂單按鈕
+  .orderSubmitBar {
+    box-sizing: border-box;
+    background: white;
+    padding: 0 12px 50px 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+
+    div.van-submit-bar__bar {
+      background: #ffFFFF;
+      padding: 4px;
+      display: flex;
+      overflow: hidden;
+      justify-content: space-between;
+      border-radius: 12px;
+      box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    div.number {
+      padding-left: 4px;
+      flex: 1;
+      font-size: 16px;
+      font-weight: bold;
+      padding-right: 16px;
+      color: #333333;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: hidden;
+      text-align: left;
+
+      .discounted-amt {
+        font-weight: normal;
+        width: 100%;
+        font-size: 11px;
+        color: #FF8B1D;
+        margin-right: 6px;
+      }
+
+      .price {
+        width: 100%;
+
+        &:before {
+          content: 'MOP';
+          font-size: 11px;
+        }
+        .payment-tips {
+          font-weight: normal;
+          font-size: 11px;
+          padding-left: 4px;
+          &.vip {
+            color: #666;
+          }
+        }
+      }
+
+      span:last-child {
+        b {
+          display: inline-flex;
+        }
+
+        b:first-child {
+          font-size: 16px;
+        }
+
+        b:last-child {
+          transform: translateY(1px);
+        }
+
+        svg.logo {
+          font-size: 16px;
+          margin: 0 8px;
+        }
+      }
+    }
+
+    //.van-button {
+    //  width: 100px;
+    //  height: 100%;
+    //  //border-radius: inherit;
+    //
+    //  border-radius: 12px;
+    //  background: #FF8B1D;
+    //  font-weight: bold;
+    //  font-size: 16px;
+    //}
+    .submit-button {
+      position: relative;
+      display: block;
+      flex-shrink: 0;
+      border: 0;
+      // padding: 4px ;
+      background: inherit;
+      box-sizing: border-box;
+      border-radius: 0;
+      text-align: center;
+
+      .disable-submit-content {
+        padding: 0 8px;
+
+        .mop-price {
+          &:before {
+            content: 'MOP';
+          }
+        }
+
+        .label {
+          margin-left: 5px;
+        }
+
+        color: #999999;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+
+      .submit-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        min-width: 96px;
+        padding: 0 10px;
+        font-size: 16px;
+        color: #FFFFFF;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #FF8B1D;
+        font-weight: bold;
+
+        .weight-price {
+          font-size: 15px;
+
+        }
+
+        .small-label {
+          font-size: 11px;
+          font-weight: normal;
+        }
+      }
+
+      .close-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        min-width: 96px;
+        padding: 0 10px;
+        font-size: 16px;
+        color: #FFFFFF;
+        border-radius: 21px;
+        overflow: hidden;
+        background: linear-gradient(90deg, #D5D5D5 0%, #BDBDBD 100%);
+        font-weight: bold;
+
+        .mop-price {
+          font-size: 15px;
+
+          &:before {
+            content: 'MOP';
+            font-size: 12px;
+          }
+        }
+
+        .small-label {
+          font-size: 11px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+
+
+  .remarkPopup {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    text-align: left;
+    background: white;
+
+    .van-cell {
+      padding: 0;
+    }
+
+    .van-cell::after {
+      display: none;
+    }
+
+    div.remark {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+      padding: 8px 12px;
+      box-sizing: border-box;
+
+      .content {
+        flex: 1;
+        overflow: scroll;
+
+        .van-field {
+          overflow: auto;
+          max-height: 300px;
+        }
+
+        .van-field__body {
+          background: #F9F9F9FF;
+          padding: 12px;
+          border-radius: 8px;
+          border: 0.5px solid #E5E5E5FF;
+
+          .van-field__control {
+            padding: 0px;
+            color: #999999FF;
+            box-sizing: border-box;
+          }
+        }
+
+        p {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333333;
+          margin: 12px 0 12px 0;
+        }
+
+        .van-tag {
+          font-size: 14px;
+          color: #666666;
+          height: 32px;
+          padding: 0 10px;
+          margin: 0 8px 8px 0;
+          box-sizing: border-box;
+          border: 1px solid #E5E5E5FF;
+          border-radius: 4px;
+          background: #ffffff;
+        }
+      }
+
+      .remarkButton {
+        border: 0;
+        background: #fa6c17;
+        border-radius: 8px;
+        font-size: 18px;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+
+.van-dialog.sendPrice {
+  width: 343px;
+  border-radius: 8px;
+  top: auto;
+  bottom: 0;
+
+  .van-button {
+    height: 70px;
+  }
+
+  .van-dialog__message {
+    padding: 30px 26px 16px;
+    font-size: 16px;
+    color: #333333FF;
+    line-height: 22px;
+  }
+
+  .van-hairline--top::after {
+    display: none;
+  }
+
+  .van-hairline--left::before {
+    display: none;
+  }
+
+  .van-hairline--left::after {
+    display: none;
+  }
+}

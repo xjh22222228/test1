@@ -1,0 +1,60 @@
+.search-bar2 {
+  padding: 6px 11px 6px 12px;
+  // 白色主题
+  &.searchBarLight2 {
+    .sbox {
+      background: rgba(255,255,255,0.2000);
+      border: 1px solid #fff !important;
+    }
+    .sval {
+      color: #fff;
+    }
+    .sicon {
+      background-image: url("./img/search-w.png");
+    }
+    .sbtn {
+      background-color: #fff;
+      color: #FF8B1D;
+    }
+  }
+  .sicon {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    background-image: url("./img/search.png");
+    background-size: 18px;
+  }
+  .sbtn {
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #FF8B1C;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+  }
+  .sbox {
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    position: relative;
+    height: 32px;
+    border-radius: 16px;
+    border: 0px solid transparent;
+    background-color: #fff;
+  }
+  .sval {
+    flex: 1;
+    color: #999999;
+    font-size: 14px;
+    padding-left: 1px;
+    padding-right: 12px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

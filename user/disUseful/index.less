@@ -1,0 +1,212 @@
+.market-disuseful {
+  width: 100%;
+  height: 100%;
+
+  &.mescroll {
+    .mescroll-upwarp {
+      display: none !important;
+    }
+  }
+
+  .van-nav-bar__text {
+    color: #333 !important;
+    font-weight: normal;
+  }
+
+  .notice {
+    color: #FA6C17;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #fff;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    border-radius: 12px;
+
+    .icon-notice {
+      width: 18px;
+      height: 18px;
+    }
+
+    div {
+      flex: 1;
+      width: 0;
+      margin: 0 8px;
+    }
+  }
+
+  .tab-box {
+    position: sticky;
+    top: 45px;
+    &.ios {
+      top: calc(45px + var(--ios-safe-top));
+    }
+    &.android {
+      top: calc(45px + var(--android-safe-top));
+    }
+    z-index: 110;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    color: #333;
+    background: #FFFFFF;
+    
+    div {
+      position: relative;
+      padding: 11px;
+    }
+
+    div:nth-last-child(1) {
+      color: #666666;
+    }
+
+    .active {
+      font-weight: bold;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 2px;
+        background-color: #FA6C17;
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #F5F5F7;
+  }
+
+  .voucher {
+    height: 100%;
+    overflow: scroll;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+
+    .vip-list {
+      padding: 12px 12px 0 12px;
+      background: white;
+      margin-bottom: 12px;
+      position: relative;
+
+      &.expend {
+        height: auto;
+
+        .more-parent {
+          position: relative;
+
+          .more {
+            margin-top: 10px;
+            padding-bottom: 0;
+
+            >img {
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+
+      &.default {
+        max-height: 400px;
+        overflow: hidden;
+      }
+
+      .vip-user-red-packet-parent:last-child {
+        margin-bottom: 0;
+      }
+
+      .more-parent {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+
+        .more.expend {
+          position: relative;
+
+          &:before {
+            display: none;
+          }
+        }
+
+        .more {
+          position: relative;
+          color: #FA6C17;
+          font-size: 12px;
+          width: 100%;
+          background: white;
+          padding: 0 0 12px 0;
+          margin-top: 20px;
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: -19px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(0, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+          }
+
+          >img {
+            width: 14px;
+            height: 14px;
+            margin-left: 4px;
+          }
+        }
+      }
+
+    }
+
+    .normal-list {
+      padding: 10px 12px 60px 12px;
+    }
+  }
+
+  .footer {
+    padding: 16px;
+    box-sizing: border-box;
+
+    .van-button--block {
+      background: #ffffff;
+      border: 1px solid rgba(250, 108, 22, 0.5);
+      border-radius: 8px;
+    }
+
+    span {
+      font-size: 18px;
+      font-weight: 400;
+      text-align: center;
+      color: #fa6c17;
+    }
+  }
+
+  .empty {
+    width: 100%;
+    height: 100%;
+    margin-top: 45%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    .van-image__img {
+      width: 116px;
+      height: auto;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      color: #333333;
+    }
+  }
+}

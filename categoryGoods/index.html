@@ -1,0 +1,50 @@
+<scroll-bar :down-callback="onDownCallback" class="market-category-goods">
+  <section class="market-cgoods3" :class="{classifySticky: showSticky, showClassify: showClassify}" ref="main">
+    <div class="mask2" @click="showClassify = false" v-if="showClassify"></div>
+    <div class="position-sticky" ref="topbar">
+      <sticky-header v-show="showSticky" />
+      <header-location v-show="!showSticky" sticky :title="classifyData.classifyName" />
+      <search-bar v-show="!showSticky" />
+      <div class="classify-wrap" v-if="twoClassifyList.length > 0">
+        <div class="classify2" ref="classify">
+          <div class="class-item" v-for="(item, idx) of twoClassifyList" :key="item.classifyId"
+            :class="{active: idx === twoClassIdx}" @click="handleClickCategory(idx)" ref="classifyItem">
+            <div class="class-img" :style="{backgroundImage: `url(${imgCompress(item.classifyPic)})`}"></div>
+            <span class="class-title">{{ item.classifyName }}</span>
+          </div>
+        </div>
+        <svg-icon
+          v-show="showSticky"
+          icon-class="icon_system_arrow_right_min2"
+          class="icon-arrow"
+          @click.native="showClassify = !showClassify"
+        />
+      </div>
+      <goods-classify
+        @click="handleClickCategory"
+        :data-list="threeClassifyList"
+        v-if="showClassify"
+        :selected-idx="threeClassIdx"
+      />
+    </div>
+
+    <div class="classify-main" ref="main">
+      <goods-classify
+        @click="handleClickCategory"
+        :data-list="threeClassifyList"
+        :selected-idx="threeClassIdx"
+        ref="second"
+      />
+
+      <div class="goods-wrapper2 p-tab">
+        <goods-group ref="goods" v-slot:default="{list, loading}" :http="getGoodsData" :immediate="false">
+          <goods-item v-for="(item, idx) of list" :key="item.id" :data="item" />
+
+          <goods-no-data v-if="list.length <= 0 && !loading" />
+        </goods-group>
+      </div>
+    </div>
+
+    <tab-bar />
+  </section>
+</scroll-bar>

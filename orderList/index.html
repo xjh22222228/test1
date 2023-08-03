@@ -1,0 +1,85 @@
+<scroll-bar :down-callback="onDownCallback" ref="goods" v-slot:default="{list, next, loading}" :http="getData" :init="false" class="market-oderlist-bar">
+  <section class="market-orderlist3 p-tab">
+    <div class="position-sticky">
+      <div :class="safeClassName" style="background-color: #fff;"></div>
+
+      <div class="tab-box">
+        <svg-icon icon-class="mf_icon_arrow_left_b" class="arrow-back" @click.native="onNavBack" />
+        <div class="tab-btn" v-for="item of tabList" :key="item.name" @click="handleClickTab(item.status)"
+          :class="{active: item.status === orderStatus}">
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+
+    <div class="order-box">
+      <div class="order-item" v-for="(item, index) of list" :key="item.tradeId" @click="goToOrderInfo(item.tradeId)" @touchstart="handleTouchStart(item, index, $event)" @touchend="handleTouchEnd" @touchmove="handleTouchMove">
+        <div class="o-topbar">
+          <div class="oleft">
+            <div class="store-logo" @click.stop="goStore(item)" :style="{backgroundImage: `url(${imgCompress(item.storeIcon)})`}"></div>
+          </div>
+          <div class="oright" :class="{active: item.__orderStatusActive__}">
+            <div class="or-main">
+              <div class="left-name">
+                <span class="sname" @click.stop="goStore(item)">{{ item.storeName }}</span>
+                <svg-icon icon-class="icon_system_arrow_right_min2" class="icon-arrow" />
+              </div>
+              {{ item.__orderStatus__ }}
+            </div>
+            <!-- 标签 -->
+            <div class="bottom2">
+              <store-status :data="item" />
+              <tag-group :data="item" store></tag-group>
+            </div>
+          </div>
+        </div>
+
+        <div class="ogoods-box">
+          <div class="og-left">
+            <div class="goods-item" v-for="(product, idx) of item.productList.slice(0, 4)" :key="idx">
+              <div
+                class="goods-img"
+                :style="{backgroundImage: `url(${imgCompress(product.productImg)})`}"
+              >
+              </div>
+              <div class="product-name">
+                <img :src="icon" class="icon" v-for="icon of product.activityIconList" :key="icon" />
+                {{ product.productName }}
+              </div>
+            </div>
+          </div>
+          <div class="og-right">
+            <div class="goods-qty">共</div>
+            <div class="goods-qty">{{ item.productQty }}</div>
+            <div class="goods-qty">件</div>
+          </div>
+        </div>
+
+        <div class="obtn-wrap">
+          <div class="total-amt">
+            <div>合计 <span class="amt">MOP{{ item.amtn }}</span></div>
+            <div class="comment-score-tips" v-if="item.isAllowRate && item.finalAmtn >= commentScoreInfo.orderAmount && commentScoreInfo.score && orderStatus === 1">
+              <span>{{ $t('member.comment_score_list_tips', { count: commentScoreInfo.score }) }}</span>
+            </div>
+          </div>
+          <div class="obtn light-btn" v-if="item.isAllowRate" @click.stop="goCommentPage(item)">
+            評價
+          </div>
+          <div class="obtn continue" @click.stop="handleBuy(item)">再來一單</div>
+          <div class="obtn continue" v-if="item.orderStatus === 0" @click.stop="goToOrderInfo(item.tradeId)">
+            立即支付
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <goods-end v-if="!next && list.length > 0 && !loading" />
+
+    <div class="no-data2" v-if="list.length <= 0 && !loading">
+      <img src="./img/no-data.png" />
+      <div class="no-txt">暫無訂單</div>
+    </div>
+
+    <tab-bar />
+  </section>
+</scroll-bar>

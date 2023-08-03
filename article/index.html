@@ -1,0 +1,18 @@
+<section class="article">
+  <div :class="safeClass"></div>
+  <nav-bar :title="title" className="type1" background-color="#fff" :sticky="true" v-if="navShow" />
+  <!-- 軟文上下綫狀態 -->
+  <div class="ql-container" id="ql-container" v-if="status">
+    <div :style="`background:${color}`" @click="triggerClick" v-if="h5Content" class="content ql-editor ql-snow" id="parent"></div>
+    <van-empty v-else-if="!h5Content&&!loading" :image="empty" class="custom-image" description="無法識別文案" />
+  </div>
+  <div class="aggregate31" id="activity-h5" v-else>
+    <div class="error-page">
+      <!--		-1  網絡異常  -->
+      <img :src="activityExpired" />
+      <div class="empty-class">
+        <div >抱歉，您訪問的頁面不存在！</div>
+      </div>
+    </div>
+  </div>
+</section>

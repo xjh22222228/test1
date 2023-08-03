@@ -1,0 +1,64 @@
+<!-- 門店優惠彈窗 -->
+<van-popup :safe-area-inset-bottom="true" v-model="showPopup" closeable position="bottom" class="sdiscount2" get-container="body">
+  <h2 class="title">門店優惠</h2>
+  <div class="mk-v-parent">
+    <div class="mk-v-scroll">
+      <div class="market-sub-title">門店優惠</div>
+      <!-- 優惠標簽 -->
+      <div class="discount-tags" :class="{showAll}" ref="tag">
+        <!-- 秒杀 -->
+        <div class="tags-item0" v-if="seckillDiscount != null">
+          <div class="left jian">秒殺</div>
+          <div class="right">秒殺商品 {{seckillDiscount}}折起</div>
+        </div>
+        <!-- 滿減 -->
+        <!-- <div
+          class="tags-item0"
+          v-for="item of marketStoreActivity"
+          :key="item.id"
+        >
+          <div class="left jian">
+            {{ item.activityType === 1 ? '满減' : '满折' }}
+          </div>
+          <div class="right">{{ item.activityName }}：{{ formatFullReduceMsg(item) }}</div>
+        </div> -->
+        <!-- 折扣(筍貨) -->
+        <div class="tags-item0" v-if="discountRate != null">
+          <div class="left zhe">筍貨</div>
+          <div class="right">筍貨{{discountRate}}折{{storeDiscount.multiple ? '起' : null}}</div>
+        </div>
+        <!-- 折扣(筍貨) -->
+        <div class="tags-item0" v-if="oldDiscountRate != null">
+          <div class="left zhe">折扣</div>
+          <div class="right">折扣{{oldDiscountRate}}折{{storeDiscount.oldMultiple ? '起' : null}}</div>
+        </div>
+
+        <!-- 一口价 -->
+        <div class="tags-item0" v-for="item of groupList" :key="item.id">
+          <div class="left zuhe">組合</div>
+          <div class="right">{{item.activityName}}</div>
+        </div>
+
+        <!-- 買贈 -->
+        <div class="tags-item0" v-if="buyGiftData">
+          <div class="left gift">買贈</div>
+          <div class="right">購買指定商品得贈品（贈完即止）</div>
+        </div>
+
+        <div v-if="isOver" class="discount-expand" @click="handleExpand">
+          更多優惠<img :src="arrowImg" />
+        </div>
+      </div>
+
+      <template v-if="marketStoreVoucher.length">
+        <div class="market-sub-title">門店優惠券</div>
+        <storeVoucher @click.native="onReceiveVoucher(voucher)" :item="voucher" :key="voucher.id"
+          v-for="voucher in showList" />
+        <div class="mk-all-v" @click="showAllVoucher">
+          查看本店全部優惠券<img :src="arrowRight" />
+        </div>
+      </template>
+    </div>
+  </div>
+  <storeVoucherList ref="vl" @onReceiveVoucher="onReceiveVoucher"></storeVoucherList>
+</van-popup>

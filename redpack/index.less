@@ -1,0 +1,126 @@
+main.market-order-redpack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-flow: column;
+  background: #F5F5F7;
+
+  .custom-image {
+    width: 100%;
+    height: 100%;
+
+    .van-empty__description {
+      font-size: 14px;
+      font-weight: 400;
+      color: #999999;
+      line-height: 20px;
+    }
+  }
+
+  .nav {
+    background: #ffffff;
+
+    .van-nav-bar__arrow {
+      color: #191919;
+    }
+
+    .van-nav-bar__title {
+      color: #191919;
+    }
+
+    .van-nav-bar__text {
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+    }
+  }
+
+  .fixed-bottom-class {
+    top: calc(100% - 100px);
+  }
+
+  .content {
+    flex: 1;
+    height: calc(100% - 90px);
+    display: flex;
+    overflow: scroll;
+    flex-flow: column;
+    padding: 12px;
+    box-sizing: border-box;
+
+    .disabled-red-packet-label-class {
+      text-align: left;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+  }
+
+
+
+  .bottom {
+    padding: 0 12px 42px 12px;
+    box-sizing: border-box;
+    background-color: #F5F5F7;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    opacity: 0.9;
+    .redpack-confirm-bar {
+      height: 50px;
+      background: #FFFFFF;
+      box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #333;
+      padding: 4px;
+      .count {
+        font-size: 14px;
+        font-weight: bold;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        padding: 0 8px;
+      }
+      .btn {
+        flex-shrink: 0;
+        width: 96px;
+        height: 42px;
+        background: #FF8B1D;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #fff;
+      }
+    }
+  }
+
+  .empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    .van-image__img {
+      width: 50%;
+      height: auto;
+    }
+
+    p {
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      color: rgba(49, 46, 75, 0.5);
+      line-height: 20px;
+    }
+  }
+}

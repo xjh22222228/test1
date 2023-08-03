@@ -1,0 +1,37 @@
+.goods-group-main {
+  .goods-group9 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    /deep/ .goods-item9 {
+      position: relative;
+      width: calc(50% - 5px);
+      margin-bottom: 12px;
+      &:nth-child(odd) {
+        margin-right: 5px;
+      }
+      &:nth-child(even) {
+        margin-left: 5px;
+      }
+    }
+    &.flow2 {
+      /deep/ .goods-item9 {
+        z-index: 2;
+        position: absolute;
+        right: 0;
+        &:nth-child(odd) {
+          left: 0;
+          right: initial;
+        }
+      }
+      .observe-node {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+    .observe-node {
+      height: 1px;
+    }
+  }
+}

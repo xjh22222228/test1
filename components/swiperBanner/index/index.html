@@ -1,0 +1,13 @@
+<div class="marketSwiperBanner" ref="banner" :class="bannerType">
+  <slot name="top"></slot>
+  <div :id="bannerType" :ref="bannerType" class="swiper-container" v-show="status">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" :key="index" v-for="(item,index) in data">
+        <van-image :src.sync="item.bannerImage" fit="fill" data-attr="50%" />
+      </div>
+    </div>
+    <div class="swiper-pagination" v-if="!hidePagination"></div>
+  </div>
+  <slot name="bottom"></slot>
+  <PublicJumpComponents ref="swiperBannerJump" @meal="$emit('meal',$event)" />
+</div>

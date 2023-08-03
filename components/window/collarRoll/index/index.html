@@ -1,0 +1,30 @@
+<van-popup get-container="#pop-main" :value.sync="showState" class="window-roll3 z-index-2000" @click-overlay="close"
+  :key="rollWindowData.id" overlay-class="z-index-2000">
+  <!-- <div @click="noInterest"
+       class="notMore"
+       v-show="state">不再提醒</div> -->
+  <div class="last-data-class">
+    <div class="show-data-class" v-show="showState">
+      <van-image v-show="showState" fit="contain" lazy-load @click.prevent="handlerClick"
+        :src="rollWindowData.bannerImage"> </van-image>
+      <div :style="backgroundStyle" class="fullButtomClass">
+        <div class="voucher-data-class">
+          <plantRed v-for="(item,index) in marketRedList" :key="'v'+index" :item="item" :index="index" @close="close">
+          </plantRed>
+          <activityPageRed v-for="(item,index) in  marketActivityPageRedList" :item="item" :index="index" @close="close"
+            :key="'p'+index">
+          </activityPageRed>
+        </div>
+        <div class="skip-class" v-if="rollWindowData.skipType !== 3" @click.prevent="handlerClick">查看詳情&gt;</div>
+      </div>
+    </div>
+    <div class="svg" v-show="showState">
+      <div class="empty-class" @click="close"></div>
+      <div class="close-box" @click.prevent="nextTimeShow">
+        <img :src="exitImg" class="icon_popup_exit_w" />
+      </div>
+      <div class="empty-class" @click="close"></div>
+    </div>
+  </div>
+  <PublicJumpComponents ref="windowRollJump" />
+</van-popup>

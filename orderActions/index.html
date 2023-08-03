@@ -1,0 +1,12 @@
+<section class="order-actions">
+  <div class="position-sticky">
+    <div :class="safeClass" style="background-color: #fff;"></div>
+    <nav-bar
+      title="訂單跟踪"
+      className="type1"
+      background-color="#fff"
+      :back="handleNavBack"
+    />
+  </div>
+  <market-time-steps type="rich" :actions="marketOrderInfo.actions" />
+</section>

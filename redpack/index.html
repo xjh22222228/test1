@@ -1,0 +1,25 @@
+<main class="market-order-redpack">
+  <NavComponents class="nav" :allwayShow="true" title="mFood 紅包" right-title="使用説明" @rightClick="onUse" :back="onBack" />
+  <div class="content">
+    <van-empty class="custom-image" :image="empty" description="暫無可用 mFood 紅包"
+      v-if="(effectiveList && !effectiveList.length) && (invalidList && !invalidList.length)" />
+    <template v-for="item in effectiveList">
+      <vipRedPacket v-if="[7,8].includes(item.sourceType)" :item="item" @click.native="onSelected(item)" />
+      <normalRedPacket v-else :item="item" @click.native="onSelected(item)" />
+    </template>
+    <div class="disabled-red-packet-label-class" v-if="invalidList.length">
+      不可用紅包
+    </div>
+    <template v-for="item in invalidList">
+      <vipRedPacket v-if="[7,8].includes(item.sourceType)" :disabled="true" :item="item" />
+      <normalRedPacket v-else :item="item" :disabled="true" />
+    </template>
+  </div>
+  <div class="bottom">
+    <div class="redpack-confirm-bar" v-if="effectiveList.length">
+      <div class="count">{{ memberOrderRedpackCount ? $t('COUPON.select_count_redpacket', { count: memberOrderRedpackCount }) : $t('COUPON.please_select') }}</div>
+      <div class="btn" @click="onConfirm">{{ $t('common.confirm') }}</div>
+    </div>
+  </div>
+  <DialogComponents ref="dialogComponents" :configData="configData" @beforeClose="beforeClose" />
+</main>

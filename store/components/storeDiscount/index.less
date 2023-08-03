@@ -1,0 +1,115 @@
+.sdiscount2 {
+  padding: 16px 12px 0 12px;
+  box-sizing: border-box;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  background-color: #F5F5F7;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 72%;
+  min-height: 72%;
+
+  .mk-v-parent {
+    flex: 1;
+    overflow: scroll;
+
+    .mk-store-v1 {
+      margin-bottom: 12px;
+
+    }
+  }
+
+  .mk-all-v {
+    border-radius: 8px;
+    height: 40px;
+    color: #FF8B1C;
+    font-size: 14px;
+    text-align: center;
+    background: #FFFFFF;
+    line-height: 40px;
+    margin-bottom: 12px;
+
+    >img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .market-sub-title {
+    color: #333333;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .discount-expand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #FF8B1D;
+
+    >img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .title {
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  .discount-tags {
+    &.showAll {
+      .tags-item0 {
+        display: flex !important;
+      }
+      .discount-expand img {
+        transform: rotate(180deg);
+      }
+    }
+    .tags-item0 {
+      display: flex;
+      margin-bottom: 8px;
+      justify-content: center;
+      &:nth-child(n + 5) {
+        display: none;
+      }
+      .left {
+        color: #fff;
+        width: 30px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        border-radius: 4px;
+      }
+      .gift {
+        background: #FA6C17;
+      }
+      .zhe {
+        background: linear-gradient(90deg, #7CBF56 0%, #77B553 100%);
+      }
+      .te {
+        background: linear-gradient(90deg, #7CBF56 0%, #77B553 100%);
+      }
+      .jian {
+        background: linear-gradient(90deg, #FB6D5F 0%, #E05346 100%);
+      }
+      .zuhe {
+        background: linear-gradient(90deg, #FB6D5F 0%, #E05346 100%);
+      }
+
+      .right {
+        flex: 1;
+        margin-left: 8px;
+        font-size: 12px;
+        color: #666;
+      }
+    }
+  }
+}

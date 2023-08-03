@@ -1,0 +1,116 @@
+<section class="sale-detail">
+  <div class="position-sticky">
+    <div :class="safeClass" style="background-color: #fff;"></div>
+    <nav-bar
+      title="售後詳情"
+      className="type1"
+      background-color="#fff"
+      :back="handleNavBack"
+    />
+  </div>
+  <div class="panel-wrapper">
+    <div class="panel" v-for="(item, index) in customMarketRefundInfo" :key="index">
+      <div class="header">
+        <div class="left">
+          <div class="title">{{ statusMap[item.refundStatus] }}</div>
+        </div>
+        <div class="right" v-if="item.refundStatus === 0" @click="handleCancelRefund">撤銷退款申請</div>
+      </div>
+      <van-divider class="divider" dashed />
+      <div class="refund-wrapper">
+        <div class="title">
+          <div class="label">退款金額</div>
+          <div class="value">MOP{{ item.refundAmtn }}</div>
+        </div>
+        <div class="title sm" v-if="item.isRefundConsumption">
+          <div class="label" v-html="$t('refund.unsupported_title')"></div>
+          <div class="value">
+            <div v-if="item.refundStatus === 1" class="link" @click="goGoldIndex(item)">{{ $t('common.view') }} <svg-icon icon-class="mf_icon_arrow_right" class="link-icon" /></div>
+          </div>
+        </div>
+        <div class="tips" v-else-if="item.refundAmtn > 0">退回至原賬戶</div>
+        <div class="tips sm" v-if="showRedpacketTips(item)">
+          <svg-icon icon-class="mf_icon_order_alert" class="icon" />
+          <span>訂單使用的紅包/代金券不再退回</span>
+        </div>
+        <div class="title grey" v-if="item.refundConsumptionAmtn">
+          <div class="label">{{ $t('gold_refund_label') }}</div>
+          <div class="value">{{ $t('gold_refund_info', { amount: item.refundConsumptionAmtn, count: item.refundConsumptionQty || 1 }) }}</div>
+        </div>
+        <div class="title sm" v-if="item.refundConsumptionAmtn">
+          <div class="label" v-html="$t('refund.refund_consumption_tips')"></div>
+          <div class="value">
+            <div v-if="item.refundStatus === 1" class="link" @click="goGoldIndex(item)">{{ $t('common.view') }} <svg-icon icon-class="mf_icon_arrow_right" class="link-icon" /></div>
+          </div>
+        </div>
+        <div class="btn-group">
+          <div class="btn-link" @click="goUserRedpack(item)" v-if="item.isRefundGift">
+            {{ $t('refund.refund_redpacket') }}
+            <svg-icon v-if="item.refundStatus === 1" icon-class="mf_icon_arrow_right" class="link-icon" />
+          </div>
+          <div class="btn-link" @click="goUserVoucher(item)" v-if="item.isRefundVoucher">
+            {{ $t('refund.refund_voucher') }}
+            <svg-icon v-if="item.refundStatus === 1" icon-class="mf_icon_arrow_right" class="link-icon" />
+          </div>
+          <div class="btn-link" @click="goMallCoupon(item)" v-if="item.refundMallCouponQty">
+            {{ $t('refund.refund_mallcoupon', { count: item.refundMallCouponQty }) }}
+            <svg-icon v-if="item.refundStatus === 1" icon-class="mf_icon_arrow_right" class="link-icon" />
+          </div>
+        </div>
+      </div>
+      <div class="refund-process" v-if="item.actions && item.actions.length">
+        <h1>退款流程</h1>
+        <market-time-steps :actions="item.actions" />
+      </div>
+      <div v-if="item.items && item.items.length">
+        <h1 class="mb">退款信息</h1>
+        <div class="product-list">
+          <div class="product" v-for="(product, index) in item.limitItems" :key="index">
+            <van-image fit="cover" class="img" :src="product.productImg" lazy-load />
+            <div class="info-wrapper ellipsis">
+              <div class="name-wrapper ellipsis">
+                <img :src="icon" class="icon" v-for="icon of product.activityIconList" :key="icon" />
+                <div class="name ellipsis">{{ product.productName }}</div>
+              </div>
+              <div class="price-wrapper">
+                <div class="count">x{{ product.count }}</div>
+                <div class="price">
+                  <div class="origin" v-if="formatAmt(product)">MOP{{ formatAmt(product) }}</div>
+                  <div class="current">
+                    <span>MOP</span>
+                    <span class="lg">{{ product.refundItemAmtn }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="expand-bar"
+            v-if="item.items && item.items.length > 2 && !item.isProductListExpanded"
+            @click="expandProductList(index)">
+            展開全部{{ item.items.length }}個商品
+          </div>
+        </div>
+      </div>
+      <div class="cell-group">
+        <van-cell class="cell" :border="false">
+          <template #title>
+            <span class="cell-title">退款原因</span>
+          </template>
+          <div class="cell-value">{{ item.reason }}</div>
+        </van-cell>
+        <van-cell class="cell" :border="false">
+          <template #title>
+            <span class="cell-title">訂單編號</span>
+          </template>
+          <div class="cell-value">{{ item.tradeNo }}</div>
+        </van-cell>
+        <van-cell class="cell" :border="false">
+          <template #title>
+            <span class="cell-title">申請時間</span>
+          </template>
+          <div class="cell-value">{{ item.applyTime | dateFormat }}</div>
+        </van-cell>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,211 @@
+.market-info {
+  background-image: url("~@/assets/images/bg_restaurant_map@2x.png");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  position: relative;
+  padding: 12px;
+  box-sizing: border-box;
+
+  .storeIno {
+    margin: 0 0 8px 0;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 0 rgba(49, 46, 75, 0.16);
+    display: flex;
+    flex-direction: column;
+
+    span.store-status {
+      font-size: 12px;
+      color: #fa6c17;
+      display: flex;
+      align-items: center;
+      line-height: 1.2;
+      background: #FEF0E8;
+      padding: 2px 6px;
+      border-radius: 4px;
+
+      &.close {
+        color: #999999;
+        background: #F0F0F0;
+      }
+    }
+
+    .titleNew {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 0.5px solid #F0F0F0;
+      padding-bottom: 12px;
+
+      .title {
+        font-weight: bold;
+        color: #333333;
+        line-height: 22px;
+        font-size: 16px;
+      }
+    }
+
+    .adds {
+      display: flex;
+      padding: 12px 0 0 0;
+      text-align: left;
+      align-items: flex-start;
+
+      .address {
+        font-size: 14px;
+        color: #333333;
+        line-height: 20px;
+      }
+
+      .distance {
+        font-size: 12px;
+        color: #999999;
+        line-height: 17px;
+      }
+
+      .left {
+        flex: 1
+      }
+
+      .right {
+        width: 90px;
+        margin-left: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .online {
+          width: 1px;
+          height: 19px;
+          background: #F0F0F0;
+          margin: 0 12px;
+        }
+
+        .icon {
+          .size24 {
+            font-size: 22px;
+          }
+
+          font-size: 10px;
+          color: #999999;
+          line-height: 14px;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+        }
+      }
+    }
+
+    div.timesNew {
+      margin: 0;
+      overflow: hidden;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 12px 0 0;
+      box-sizing: border-box;
+      box-shadow: 0 0 0 0 rgb(49 46 75 / 16%) !important;
+      display: flex;
+      flex-direction: column;
+
+      div.item {
+        display: flex;
+        margin-bottom: 8px;
+        align-items: flex-start;
+        align-content: baseline;
+        justify-content: space-between;
+
+        &:nth-child(1) {
+          order: 7;
+          margin-bottom: 0;
+        }
+
+        &:nth-child(2) {
+          order: 1;
+        }
+
+        &:nth-child(3) {
+          order: 2;
+        }
+
+        &:nth-child(4) {
+          order: 3;
+        }
+
+        &:nth-child(5) {
+          order: 4;
+        }
+
+        &:nth-child(6) {
+          order: 5;
+        }
+
+        &:nth-child(7) {
+          order: 6;
+        }
+
+        span {
+          width: 80px;
+          color: #333;
+          font-size: 14px;
+          font-weight: 400;
+          text-align: left;
+          line-height: 22px;
+
+          &:first-child {
+            width: 48px;
+          }
+        }
+      }
+
+      div.time {
+        flex: 1;
+        width: 0;
+        display: flex;
+        flex-flow: row wrap;
+        align-content: flex-start;
+        b {
+          flex: 0 0 33%;
+          color: #333;
+          font-size: 13px;
+          line-height: 20px;
+          font-weight: normal;
+
+          &.timeout {
+            text-align: left;
+            text-indent: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .license {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333333;
+    line-height: 20px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 14px 12px;
+    margin-bottom: 8px;
+    .left {
+      display: flex;
+      align-items: flex-start;
+      padding-right: 8px;
+      flex: 1;
+      text-align: left;
+    }
+    .license-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+    }
+    .right {
+      white-space: nowrap;
+    }
+  }
+}

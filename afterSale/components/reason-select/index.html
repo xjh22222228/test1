@@ -1,0 +1,23 @@
+<van-popup
+  class="reason-sel3"
+  position="bottom"
+  v-model="showDialog"
+>
+  <div class="sel-wrapper">
+    <div class="stitle">請選擇真實原因，以免影響退款結果</div>
+    <svg-icon icon-class="icon_basic_mf_icon_message" class="close" @click.native="close" />
+
+    <div class="reason-list">
+      <div
+        class="r-item"
+        v-for="reason of reasontList"
+        :key="reason"
+        @click="onCheck(reason)"
+        :class="{checked: reason === reasonValue}"
+      >
+        <div class="left">{{ reason }}</div>
+        <div class="checkbox"></div>
+      </div>
+    </div>
+  </div>
+</van-popup>

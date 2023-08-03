@@ -1,0 +1,284 @@
+@import "../../../assets/css/var.less";
+
+.market-oderlist-bar {
+  background-color: #F5F5F7;
+}
+
+.market-orderlist3 {
+  .safeMargin();
+
+  .tab-box {
+    position: relative;
+    display: flex;
+    height: 44px;
+    background-color: #fff;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-left: 36px;
+    .arrow-back {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+    }
+    .tab-btn {
+      position: relative;
+
+      &.active {
+        color: #333;
+        font-weight: bold;
+
+        &::after {
+          content: "";
+          width: 16px;
+          height: 2px;
+          background: linear-gradient(144deg, #FF951D 0%, #FF8B1D 100%);
+          border-radius: 1px;
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translate(-50%, 5px);
+        }
+      }
+
+      color: #666666;
+      font-size: 16px;
+    }
+  }
+
+  .order-box {
+    margin: 12px 0;
+    padding: 0 12px;
+
+    .order-item {
+      margin-bottom: 9px;
+      border-radius: 12px;
+      padding: 12px;
+      background-color: #fff;
+    }
+
+    .o-topbar {
+      display: flex;
+      text-align: left;
+
+      .oleft {
+        padding-right: 4px;
+        display: flex;
+        align-items: flex-start;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .store-logo {
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+        border: .5px solid #F0F0F0;
+        border-radius: 8px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right: 4px;
+      }
+      .left-name {
+        flex: 1;
+        width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .sname {
+        font-size: 14px;
+        line-height: 17px;
+        color: #333;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        max-width: calc(100% - 30px);
+        
+      }
+      .icon-arrow {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+
+      .oright {
+        font-size: 11px;
+        color: #333333;
+        align-self: center;
+        flex: 1;
+        width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        &.active {
+          color: #FF8B1C;
+        }
+        .bottom2 {
+          margin-top: 4px;
+          display: flex;
+          align-items: start;
+        }
+        .group-box2 {
+          margin-top: 0 !important;
+        }
+      }
+      .or-main {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .ogoods-box {
+      position: relative;
+      display: flex;
+      margin-top: 17px;
+     
+
+      .og-left {
+        flex: 1;
+        display: flex;
+        .goods-item {
+          position: relative;
+          width: 76px;
+          &:not(:nth-last-child(1)) {
+            margin-right: 8px;
+          }
+          &:nth-child(4)::after {
+            z-index: 2;
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            border-radius: 8px;
+            width: 24px;
+            height: 100%;
+            background: linear-gradient(270deg, #FFFFFF 18%, rgba(255,255,255,0.6) 100%);
+          }
+          .product-name {
+            color: #666;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: left;
+            margin-top: 6px;
+            .icon {
+              width: 14px;
+              height: 14px;
+              vertical-align: text-top;
+              &:not(:nth-last-child(1)) {
+                margin-right: 2px;
+              }
+            }
+          }
+        }
+        .goods-img {
+          position: relative;
+          width: 76px;
+          height: 57px;
+          background-color: #D8D8D8;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          border-radius: 8px;
+        }
+      }
+
+      .og-right {
+        z-index: 9;
+        position: absolute;
+        top: 50%;
+        right: 0px;
+        transform: translateY(-50%);
+        text-align: right;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+
+        .goods-qty {
+          color: #666666;
+          font-size: 11px;
+          line-height: 16px;
+        }
+      }
+    }
+
+    .obtn-wrap {
+      position: relative;
+      margin-top: 12px;
+      padding-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      border-top: .5px solid #F0F0F0;
+      .total-amt {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 12px;
+        margin-top: 6px;
+        text-align: left;
+        .amt {
+          font-size: 14px;
+          color: #333;
+          font-weight: bold;
+        }
+        .comment-score-tips {
+          color: #FF8D20;
+          font-size: 11px;
+        }
+      }
+
+      .obtn {
+        width: 80px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        border: 1px solid #E5E5E5;
+        font-size: 12px;
+        color: #666;
+        margin-left: 9px;
+        &.light-btn {
+          color: #fff;
+          background: #FA6C17;
+          border-color: #FA6C17;
+        }
+        &.continue {
+          color: #666;
+          border-color: #ccc;
+        }
+      }
+    }
+  }
+
+  .ended {
+    margin: 24px 0 19px 0;
+  }
+
+  .no-data2 {
+    margin-top: 215px;
+    text-align: center;
+
+    img {
+      width: 116px;
+    }
+
+    .no-txt {
+      margin-top: 8px;
+      color: #333;
+      font-size: 14px;
+    }
+  }
+}

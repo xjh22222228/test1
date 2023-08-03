@@ -1,0 +1,493 @@
+@import "../../../assets/css/var.less";
+
+.submitComment23 {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column;
+  position: relative;
+
+  .good-wrap {
+    padding: 0 0 0 0;
+    margin: 18px 0 8px 0;
+
+    .pitem {
+      height: 32px;
+      background: linear-gradient(90deg, #F5F5F7 0%, rgba(245, 245, 247, 0) 100%);
+      border-radius: 8px 0px 0px 8px;
+      padding-left: 4px;
+      display: flex;
+      align-items: center;
+
+      &:not(:nth-last-child(1)) {
+        margin-bottom: 4px;
+      }
+
+      .left {
+        img {
+          width: 24px;
+          height: 24px;
+          object-fit: cover;
+          border-radius: 4px;
+          border: 0.5px solid #E5E5E5;
+        }
+      }
+
+      .middle {
+        margin-left: 4px;
+        flex: 1;
+        text-align: left;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-right: 20px;
+        .icon {
+          width: 14px;
+          height: 14px;
+          min-width: 14px;
+          min-height: 14px;
+          vertical-align: middle;
+          margin-right: 3px;
+        }
+        span {
+          vertical-align: middle;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+
+        .touch {
+          width: 16px;
+          height: 16px;
+          background-size: 16px;
+          margin-right: 4px;
+        }
+
+        .up-box {
+          margin-right: 16px;
+          display: flex;
+          align-items: center;
+
+          .touch {
+            background-image: url("./img/up.png");
+          }
+
+          &.active .touch {
+            background-image: url("./img/up-active.png");
+          }
+        }
+
+        .down-box {
+          display: flex;
+          align-items: center;
+
+          .touch {
+            background-image: url("./img/down.png");
+          }
+
+          &.active .touch {
+            background-image: url("./img/down-active.png");
+          }
+        }
+      }
+    }
+  }
+
+  .van-rate__icon,
+  .van-icon__image {
+    width: 24px;
+    height: 24px;
+  }
+
+  .orderInfoUpwarp {
+    padding: 16px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .space-between-class {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    strong {
+      color: #333;
+      font-size: 16px;
+    }
+  }
+
+  .small-label-class {
+    color: #999;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  .rate-value-label-class {
+    color: #666;
+    font-size: 12px;
+    font-weight: 400;
+
+    &.rate-value-label-mar {
+      margin-left: 3px;
+    }
+  }
+
+  .bad-type-label-class {
+    font-size: 12px;
+    color: #333;
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .textarea-class {
+    margin-top: 12px;
+
+    textarea {
+      background: #F5F5F7;
+      border-radius: 8px;
+      width: 100%;
+      padding: 12px;
+      resize: none;
+      font-size: 14px;
+      line-height: 20px;
+      color: #333;
+      border: 0.5px solid #E5E5E5;
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+  }
+
+  .rate-label-class {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+
+    &.rate-label-small {
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+
+  .flex-start-center-class {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+
+  .product-name-class {
+    height: 100%;
+    color: #333;
+  }
+
+  .custom-image {
+    height: 100%;
+  }
+
+  .van-divider {
+    width: 100%;
+  }
+
+  .containBox {
+    flex: 1;
+    padding: 0 12px;
+    overflow: scroll;
+    box-sizing: border-box;
+    display: flex;
+    background-color: #F5F5F7;
+
+    .contain {
+      width: 100%;
+
+      .panel {
+        .amount-total-class {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+          align-items: center;
+
+          .black {
+            color: #333;
+            font-weight: bold;
+
+            &.normal {
+              font-size: 14px;
+            }
+
+            &.big {
+              font-size: 24px;
+            }
+          }
+
+          .orange {
+            font-weight: bold;
+            color: #FA6C16;
+
+            &.small {
+              font-size: 11px;
+            }
+
+            &.normal {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .contain {
+    height: 100%;
+    overflow: scroll;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .comment-score-tips {
+    width: 100%;
+    height: 20px;
+    font-size: 14px;
+    color: #FF8D20;
+    text-align: center;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      font-size: 16px;
+      margin-left: 2px;
+    }
+  }
+
+  div.panel {
+    padding: 16px 12px 12px 12px;
+    margin-top: 12px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-flow: column;
+    align-items: baseline;
+
+    .line {
+      width: 100%;
+      height: 1px;
+      background-color: #F0F0F0;
+      margin: 16px 0 12px 0;
+
+    }
+
+    .productImage2 {
+      width: 40px;
+      height: 40px;
+    }
+
+    .van-card {
+      background: #FFFFFF;
+
+      .van-card__header {
+        height: 45px;
+      }
+    }
+  }
+
+  .options {
+    flex-flow: row !important;
+    justify-content: center;
+
+    .item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+    }
+
+    .mf_icon_phone_y,
+    .mf_icon_refund_m {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+
+    .mf_icon_refund_m.refund {
+      opacity: 0.5;
+    }
+
+    .reimburse {
+      font-size: 12px;
+      font-weight: 400;
+      color: #333;
+    }
+
+    .call {
+      font-size: 12px;
+      font-weight: 400;
+      color: #fa6c16;
+    }
+  }
+
+  .van-card {
+    padding: 0;
+    width: 100%;
+    background-color: transparent;
+
+    .product-name-class {
+      padding-left: 11px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      max-width: 100%;
+      word-break: break-word;
+      color: #333;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .name {
+      display: flex;
+      text-align: left;
+      align-items: baseline;
+      justify-content: space-between;
+
+      span:first-child {
+        font-size: 14px;
+        font-weight: 400;
+        color: #333;
+      }
+
+      span:last-child {
+        font-size: 14px;
+        color: #333;
+        padding-left: 11px;
+      }
+    }
+
+    .van-card__thumb {
+      width: 40px;
+      height: 40px;
+      margin-right: 0;
+      border: 0.5px solid #E5E5E5;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .van-card__content {
+      min-height: inherit;
+      justify-content: initial;
+
+      >div {
+        display: flex;
+        flex-flow: column;
+        align-items: baseline;
+      }
+
+      div.name {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      div.attr {
+        font-size: 12px;
+        font-weight: 400;
+        color: rgba(49, 46, 75, 0.5);
+        margin-top: 5px;
+        text-align: left;
+      }
+    }
+
+    .van-card__desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(49, 46, 75, 0.5);
+    }
+
+    .van-card__price {
+      display: flex;
+      align-items: baseline;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(49, 46, 75, 0.5);
+    }
+  }
+
+  .footer-wrapper {
+    border-top: 12px solid #F5F5F7;
+
+    &.disabledBtn {
+      pointer-events: none;
+
+      .footer>div {
+        opacity: 0.5;
+      }
+    }
+
+    .footer {
+      padding: 12px;
+
+      &>div {
+        background-color: #FA6C17;
+        border-radius: 8px;
+        height: 49px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .img-box {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 7px;
+    margin-top: 18px;
+
+    .img-item {
+      margin-bottom: 12px;
+      position: relative;
+      width: 104px;
+      height: 104px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: .5px solid #E5E5E5;
+      background-size: 100%;
+      background-repeat: no-repeat;
+
+      >img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .close {
+      z-index: 2;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 22px;
+      height: 22px;
+      background-image: url("../afterSale/img/close.png");
+      background-size: 100%;
+    }
+
+    .uploadimg {
+      background-image: url("../afterSale/img/upload.png");
+    }
+  }
+}

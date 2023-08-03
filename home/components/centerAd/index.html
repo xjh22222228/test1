@@ -1,0 +1,21 @@
+<!-- 瓷片区广告 -->
+<div ref="node" v-if="marketPorcelainAds.length > 0">
+  <div v-for="(item, index) in marketPorcelainAds" :key="index">
+    <div class="center-ad12" v-if="item.list && item.list.length">
+      <div
+        class="type-wrapper"
+        :class="[`type${item.type}`]"
+      >
+        <div
+          class="sub-item"
+          v-for="element in item.list"
+          :key="element.id"
+          :style="element.bannerImage ? {backgroundImage: `url(${imgCompress(element.bannerImage)})`} : {}"
+          @click="onClick(element)"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+  <public-jump ref="publicJump" />
+</div>

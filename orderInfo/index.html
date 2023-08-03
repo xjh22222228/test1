@@ -1,0 +1,382 @@
+<scroll-bar ref="orderInfo" v-slot:default="{list, next}" class="market-oderinfo-bar" :down-callback="onDownCallback">
+  <guide-popup :visible.sync="guidePopupVisible" />
+  <section class="order-info" :class="{whiteBgNav: showWhiteBgNav, hideTopBar}">
+    <div class="order-info-main">
+      <div class="position-sticky order-info-header">
+        <div class="safe-head" :class="safeClassName" ref="safeHead"></div>
+        <nav-bar v-if="!hideTopBar" title="訂單詳情" :className="showWhiteBgNav ? 'type1' : ''"
+          :background-color="showWhiteBgNav ? '#fff' : 'transparent'" :back="handleNavBack" />
+      </div>
+      <div>
+        <div :class="`order-status ${isApp ? deviceType : ''}`">
+          <div class="text ellipsis">
+            <div @click="toOrderActions" class="btn-to-action">
+              <div class="count-down-wrapper" v-if="showPayCountDown">
+                <span class="text">剩餘</span>
+                <van-count-down @finish="onPayTimeout" :time="marketOrderSurplusTime" millisecond format="mm:ss"
+                  class="text count-down" />
+              </div>
+              <div v-else>{{ orderStatusMap[marketOrderInfo.orderInfo.orderStatus] }}</div>
+              <van-icon name="arrow" v-if="marketOrderInfo.actions && marketOrderInfo.actions.length" />
+            </div>
+          </div>
+          <div class="sub-text ellipsis">
+            {{ subTitle }}
+          </div>
+        </div>
+        <action-bar :class="actionBarClass" :guideMode="guidePopupVisible" />
+        <div class="panel-wrapper">
+          <div class="panel resend-tips" @click.stop v-if="marketOrderInfo.orderInfo.secondlyMsgStr">
+            <div class="tips-wrapper">
+              <svg-icon icon-class="icon_system_tips_order" class="icon" />
+              <div class="text" v-html="marketOrderInfo.orderInfo.secondlyMsgStr">
+              </div>
+            </div>
+            <div class="action-wrapper">
+              <div class="item" @click="onCallService">
+                <span class="text">致電客服</span>
+                <van-icon name="arrow" color="#999" class="icon" />
+              </div>
+            </div>
+          </div>
+          <div class="panel" v-if="marketOrderInfo.orderInfo.refundProgress > -99">
+            <div class="refund-wrapper" @click="toAfsDetail">
+              <van-cell class="cell" :border="false" is-link :clickable="false">
+                <template #title>
+                  <span class="cell-title">退款進度</span>
+                </template>
+                <div class="cell-value yellow">{{ refundProgressMap[marketOrderInfo.orderInfo.refundProgress] }}</div>
+              </van-cell>
+            </div>
+          </div>
+          <div class="panel">
+            <h2 class="store-name" @click="toStoreDetail">
+              <div class="name-title ellipsis">{{ marketOrderInfo.storeInfo.storeName }}</div>
+              <van-icon name="arrow" color="#999" class="icon" />
+            </h2>
+            <!-- 商品列表 -->
+            <div class="product-list">
+              <div class="product" v-for="(item, index) in productList" :key="item.orderProductId">
+                <van-image fit="cover" class="img" :src="item.productImg" lazy-load />
+                <div class="info-wrapper ellipsis">
+                  <div class="name-wrapper ellipsis">
+                    <img :src="icon" class="icon" v-for="icon of item.activityIconList" :key="icon" />
+                    <div class="name ellipsis">{{ item.productName }}</div>
+                  </div>
+                  <div class="price-wrapper">
+                    <div class="count">x{{ item.buyQty }}</div>
+                    <div class="price">
+                      <div class="origin" v-if="item.originalAmtn">MOP{{ item.originalAmtn }}</div>
+                      <div class="current">
+                        <b>MOP</b>
+                        <span class="lg">{{ item.productAmtn }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="expand-bar" v-if="marketOrderInfo.productList && marketOrderInfo.productList.length > 3"
+                @click="expandProductList">
+                <template v-if="!isProductListExpanded">
+                  展開全部{{ marketOrderInfo.productList.length }}個商品
+                </template>
+                <template v-else>收起全部商品</template>
+              </div>
+            </div>
+            <div class="other-info">
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.plasticBagFee">
+                <div class="left">
+                  <div class="name">打包費</div>
+                  <svg-icon @click.native="openExplain(1)" icon-class="mf_icon_order_explain2" class="icon" />
+                  <!-- <div class="sub-info">（體積：{{ marketOrderInfo.orderInfo.plasticBagQty }}）</div> -->
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current">
+                      <b>MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.plasticBagFee }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.deliveryType !==3">
+                <div class="left">
+                  <div class="name">配送費</div>
+                  <svg-icon @click.native="openExplain(2)" icon-class="mf_icon_order_explain2" class="icon" />
+                  <div class="sub-info" v-if="marketOrderInfo.orderInfo.productWeight">（重量：{{
+                    marketOrderInfo.orderInfo.productWeight }}kg）</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="origin"
+                      v-if="$$(marketOrderInfo,'orderInfo','oldDeliveryFee') !== $$(marketOrderInfo,'orderInfo','deliveryFee')">
+                      MOP{{marketOrderInfo.orderInfo.oldDeliveryFee }}</div>
+                    <div class="current">
+                      <b>MOP</b>
+                      <!--  -marketOrderInfo.orderInfo.disDeliveryAmtn  -->
+                      <span class="lg">{{ utils.filterSecret(marketOrderInfo.orderInfo.deliveryFee) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 总重量  超出的重量 -->
+              <!-- <div v-if="$$(marketOrderInfo,'orderInfo','overWeightFee')">
+                <div class="over-weight-tips-label">
+                  (總重量/體積{{$$(marketOrderInfo,'orderInfo','productWeight')}}kg因超出
+                  {{utils.filterSecret(($$(marketOrderInfo,'orderInfo','productWeight')||0)-($$(marketOrderInfo,'orderInfo','basicWeight')||0))}}kg
+                  配送費上調MOP{{$$(marketOrderInfo,'orderInfo','overWeightFee')}})
+                </div>
+              </div> -->
+              <!-- 平台费 -->
+              <platform-fee :order-info="marketOrderInfo.orderInfo" />
+              <!-- 服务费 -->
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.serviceFee">
+                <div class="left">
+                  <div class="name">服務費</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current">
+                      <b>MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.serviceFee }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.isUnionMemberPay">
+                <div class="left">
+                  <div class="name">慳錢月卡</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current">
+                      <b>MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.memberCardAmount }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="other-info-item">
+                <div class="left">
+                  <svg-icon icon-class="icon_jian" class="icon" />
+                  <div class="name">店鋪滿減</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current red">
+                      <span>-MOP</span>
+                      <span class="lg">2</span>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.disDeliveryGiftAmtn">
+                <div class="left">
+                  <svg-icon icon-class="tab_order_mianpei" class="icon" />
+                  <div class="name">免配紅包</div>
+                </div>
+                <div class="right flex">
+                  <div class="price">
+                    <div class="current red">
+                      <b>-MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.disDeliveryGiftAmtn }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.giftAmtn">
+                <div class="left">
+                  <svg-icon icon-class="tab_order_redpoket" class="icon" />
+                  <div class="name">平台紅包</div>
+                </div>
+                <div class="right flex">
+                  <div class="mfood-vip-redpacket-icon-lg" :class="$i18n.locale" v-if="[7,8].includes(marketOrderInfo.orderInfo.sourceType)">
+                    {{ $t('COUPON.member_red_packet') }}
+                  </div>
+                  <div class="price">
+                    <div class="current red">
+                      <b>-MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.giftAmtn }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.fullAmtn">
+                <div class="left">
+                  <svg-icon icon-class="market_man" class="icon" />
+                  <div class="name">滿減滿折</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current red">
+                    </div>
+                    <div class="current red">
+                      <b>-MOP</b>
+                      <span class="lg">{{ marketOrderInfo.orderInfo.fullAmtn }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.voucherAmtn">
+                <div class="left">
+                  <svg-icon icon-class="icon_quan" class="icon" />
+                  <div class="name">商家代金券</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current red">
+                      <b>-MOP</b>
+                      <span class="lg">{{marketOrderInfo.orderInfo.voucherAmtn}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="other-info-item" v-if="marketOrderInfo.orderInfo.disConsumptionAmtn">
+                <div class="left">
+                  <svg-icon icon-class="tab_order_gold" class="icon" />
+                  <div class="name">{{ $t('order.gold') }}</div>
+                </div>
+                <div class="right">
+                  <div class="price">
+                    <div class="current red">
+                      <b>-MOP</b>
+                      <span class="lg">{{marketOrderInfo.orderInfo.disConsumptionAmtn || 0}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <van-divider class="divider sum-wrapper-top" />
+            <div class="sum-wrapper">
+              <div class="left">
+                <!-- <span>優惠規則</span>
+                <svg-icon @click.native="openExplain(3)" icon-class="mf_icon_order_explain2" class="icon" /> -->
+              </div>
+              <div class="right">
+                <div class="flex-wrapper">
+                  <div class="coupon">
+                    <template v-if="marketOrderInfo.orderInfo.discountAmtn">
+                      <span>已優惠</span>
+                      <b class="sm red">MOP{{ marketOrderInfo.orderInfo.discountAmtn }}</b>
+                    </template>
+                  </div>
+                  <div class="sum">
+                    <span>小計</span>
+                    <b>MOP</b>
+                    <b class="lg">{{ marketOrderInfo.orderInfo.amtn }}</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <van-divider class="divider sum-wrapper-bottom" />
+            <div class=""></div>
+            <div class="call-box">
+              <svg-icon icon-class="_mf_icon_phone" class="icon" @click.native="handlePhoneCall" />
+              <span class="call" @click="handlePhoneCall">聯繫商家</span>
+            </div>
+          </div>
+          <EnjoyBenefit v-if="showEnjoyBenefit" class="enjoy-benefit"/>
+          <div class="panel">
+            <h1>配送信息</h1>
+            <van-divider class="divider" />
+            <div class="cell-group">
+              <van-cell class="cell" :border="false">
+                <template #title>
+                  <span class="cell-title">期望時間</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.orderInfo.planFinishTimeStr }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="isSelfPickUp">
+                <template #title>
+                  <span class="cell-title">商家地址</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.storeInfo.storeAddress }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-else>
+                <template #title>
+                  <span class="cell-title">配送地址</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.buyerInfo.receiverAddress }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="$$(marketOrderInfo,'buyerInfo','receiverName')">
+                <template #title>
+                  <span class="cell-title">客戶名稱</span>
+                </template>
+                <div class="cell-value">
+                  {{ marketOrderInfo.buyerInfo.receiverName }}{{ marketOrderInfo.buyerInfo.receiverGender == 1 ? '（先生）'
+                  : '（女士）' }}
+                </div>
+              </van-cell>
+              <van-cell class="cell" :border="false">
+                <template #title>
+                  <span class="cell-title">手機號碼</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.buyerInfo.receiverMobile }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false">
+                <template #title>
+                  <span class="cell-title">配送服務</span>
+                </template>
+                <div class="cell-value">{{ deliveryTypeMap[marketOrderInfo.orderInfo.deliveryType] }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="!isSelfPickUp">
+                <template #title>
+                  <span class="cell-title">配送騎手</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.riderInfo.riderName }}</div>
+              </van-cell>
+            </div>
+          </div>
+          <div class="panel">
+            <h1>訂單信息</h1>
+            <van-divider class="divider" />
+            <div class="cell-group">
+              <van-cell class="cell" :border="false">
+                <template #title>
+                  <span class="cell-title">訂單編號</span>
+                </template>
+                <div class="cell-value">
+                  <span>{{ marketOrderInfo.orderInfo.tradeNo }}</span>
+                  <span class="btn-copy" @click="copyStr"
+                    :data-clipboard-text="marketOrderInfo.orderInfo.tradeNo">複製</span>
+                </div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="$$(marketOrderInfo,'orderInfo','orderNumber')">
+                <template #title>
+                  <span class="cell-title">訂單號</span>
+                </template>
+                <div class="cell-value">#{{ marketOrderInfo.orderInfo.orderNumber }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="$$(marketOrderInfo,'orderInfo','createTime')">
+                <template #title>
+                  <span class="cell-title">下單時間</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.orderInfo.createTime | dateFormat }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false" v-if="$$(marketOrderInfo,'payInfo','payTypeName')">
+                <template #title>
+                  <span class="cell-title">支付方式</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.payInfo.payTypeName }}</div>
+              </van-cell>
+              <van-cell class="cell" :border="false">
+                <template #title>
+                  <span class="cell-title">訂單備註</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.orderInfo.buyerRemark }}</div>
+              </van-cell>
+              <van-cell class="cell width-title" :border="false" v-if="marketOrderInfo.orderInfo.memberNo">
+                <template #title>
+                  <span class="cell-title">商家會員號碼</span>
+                </template>
+                <div class="cell-value">{{ marketOrderInfo.orderInfo.memberNo }}</div>
+              </van-cell>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <explain-dialog ref="explain" />
+  </section>
+</scroll-bar>

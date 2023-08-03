@@ -1,0 +1,39 @@
+<section class="market-category3">
+  <div ref="topbar">
+    <header-location @back="onBack" />
+    <search-bar />
+  </div>
+
+  <div class="cwrap p-tab" :style="{height: `calc(100% - ${(topbarHeight) / 100}rem)`}">
+    <div class="sidebar" ref="sidebar">
+      <div class="bar-item" v-for="(item, idx) of categoryList" :key="item.classifyId"
+        :class="{active: sidebarActiveIdx === idx}" @click="onClickSidebar(idx)" ref="baritem">
+        <img class="bartag" />
+        <div class="bar-title">{{ item.classifyName }}</div>
+        <!-- <span class="bar-num">{{ item.productCount }}</span> -->
+      </div>
+    </div>
+
+    <div class="container2" ref="container" @scroll="onScroll">
+      <div class="citem" v-for="item of categoryList" :key="item.classifyId" ref="containerItem">
+        <div class="topbar">
+          <div class="cleft">{{ item.classifyName }}</div>
+          <div class="cright" @click="goCategoryGoods(item)">
+            去看看
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+        <div class="two-box" v-if="item.children">
+          <div class="titem" v-for="c of item.children" :key="c.classifyId" @click="goCategoryGoods(item, c)">
+            <div class="cimg" :style="{backgroundImage: `url(${imgCompress(c.classifyPic)})`}"></div>
+            <div class="ctitle">{{ c.classifyName }}</div>
+            <!-- <span class="c-count">{{ c.productCount }}</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <tab-bar />
+</section>

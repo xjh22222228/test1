@@ -1,0 +1,33 @@
+<scroll-bar :down-callback="onDownCallback" class="market-new-zonepage">
+  <div class="new-home3" :class="{stickyTop: stickyTop}">
+    <div class="new-main">
+      <div v-if="!isShare" ref="header" class="header-bar3 position-sticky">
+        <div class="safe-head" :class="safeClassName"></div>
+        <nav-bar title="新人專享區" className="type1" class="header-bar" >
+          <template slot="right">
+            <shareBtn ref="share" @click.native="share"/>
+          </template>
+        </nav-bar>
+      </div>
+
+      <div class="new-container" v-if="!isOver">
+        <div class="banner-bg">
+          <img :src="imageUrl" />
+        </div>
+        <!-- 新人优惠券 -->
+        <!-- 如果是分享環境，打開右上角引導分享 -->
+        <new-coupon @openBrowser="openBrowser" style-type="2" class="mt12" />
+        <goods-zone ref="goods" new-user :http="getGoodsData" />
+      </div>
+      <div v-else class="overbox">
+        <img src="./img/over.png" class="overimg">
+        <div class="txt">新人活動已結束拉</div>
+        <div class="txt">更多精彩活動邀您參與</div>
+        <div class="go-home" @click="goHomePage" v-if="!isShare">返回首頁</div>
+      </div>
+    </div>
+    <openBrowser :visible.sync="openBrowserVisible" />
+  </div>
+
+  <history-order-float ref="history" />
+</scroll-bar>

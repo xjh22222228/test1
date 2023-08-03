@@ -1,0 +1,63 @@
+<scroll-bar
+  :down-callback="onDownCallback"
+  :init="false"
+  class="market-near8"
+  ref="goods"
+  :http="getData"
+  logo
+  v-slot:default="{list, loading}"
+  @end="handleEnd"
+>
+  <section class="near9">
+    <div class="position-sticky top2" ref="topbar" :class="{showFilter: showFilter}">
+      <header-location sticky title="附近商家" />
+
+      <div class="tabs3">
+        <div
+          v-for="item of sortTypes"
+          :key="item.id"
+          class="tab-item"
+          :class="{active: sortType === item.id}"
+          @click="onTab(item)"
+        >
+          {{ item.title }}
+        </div>
+        <!-- <div class="filter-btn" @click="showFilter = !showFilter">
+          篩選
+        </div> -->
+      </div>
+
+      <div class="filter-box">
+        <div class="filter-title">
+          優惠<span>(可多選)</span>
+        </div>
+        <div class="filter-btns">
+          <div
+            class="filter-item"
+            :class="{active: item.selected}"
+            v-for="(item, idx) of filterList"
+            :key="item.value"
+            @click="onClickFilter(idx)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
+        <div class="click-wrap">
+          <div class="click-btn" @click="onFilterReset">重置</div>
+          <div class="click-btn" @click="onFilterDone">完成(已選{{ filterSelectedNum }})</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="goods-wrap">
+      <near-item v-for="item of list" :key="item.id" :item="item" @click="goStore" :product-count="-1" />
+
+      <div class="outbox3" v-if="outList.length > 0">
+        <div class="outname">超出當前配送範圍店鋪</div>
+        <near-item style="opacity: .5;" v-for="(item, idx) of outList" :key="idx" :item="item" @click="goStore" :product-count="-1" />
+      </div>
+    </div>
+
+    <no-data style="margin-top: 1.3rem;" v-if="list.length <= 0 && outList.length <= 0 && !loading" />
+  </section>
+</scroll-bar>

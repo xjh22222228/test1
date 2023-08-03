@@ -1,0 +1,134 @@
+<div class="market-store-parent">
+  <main ref="store" class="market-store" :class="{lock: expandThird}" @scroll.passive="onStoreScroll" :style="{'padding-bottom': submitHeight}">
+    <div class="position-sticky header-con">
+      <navHeader :style="headerStyle" ref="headerBar" :header-style="headerStyle">
+        <div :class="{active: cardRgba > .9,'market-store-mid-input':true}" slot="mid" @click="goSearch">
+          <svg-icon icon-class="icon_map_search" class="search-icon"></svg-icon>
+          店内{{marketStoreDetail.productCount || 0}}件商品
+        </div>
+        <div slot="right" class="right-empty">
+          <span class="hdiscount" v-if="cardRgba == 1" @click="openDiscount"></span>
+          <shareBtn ref="share" @click.native="share" />
+        </div>
+      </navHeader>
+      <tab-component id="header-tab" :tab-type="tabType" @tabchange="tabChange" v-if="isShowHeaderTab && indexStatusOpen" :style="{top: (headerBarHeight + appSafeTop)+'px'}" />
+    </div>
+
+    <div :style="{paddingTop: `${appSafeTop}px`}">
+      <div class="yellow-bg"></div>
+      <img :src="marketStoreDetail.thumbnail|imgCompress" class="headerImage" />
+      <div :class="{storeBg:true,stick:cardRgba == 1}">
+        <market-header ref="headerCard" @onMarketDetail="onMarketDetail" />
+      </div>
+
+      <div class="container-box" v-show="tabType === 2">
+        <tab-component :tab-type="tabType" @tabchange="tabChange" :class="{opacity0: isShowHeaderTab}" v-if="indexStatusOpen" />
+        <notice ref="storeNotice" key="store" class="normalMarket" v-show="marketStoreDetail.meno" />
+        <div class="marketBanner" :class="{removeMargin:marketStoreDetail.meno}" v-show="marketBanner.show">
+          <swiper-banner-components :click-type="2" ref="marketBanner" :config.sync="marketBanner" from="點餐頁中通廣告" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 首页Tab -->
+    <div v-show="tabType === 1" class="store-index">
+      <classify-index :tab-type="tabType" @tabchange="tabChange" @click="handleClickClassIndex" />
+      <ad-banner-index @viewAll="onRecommendViewAll" />
+      <recommend-index
+        v-for="item of recommendList"
+        :key="item.id"
+        :data="item"
+        :store-id="id"
+        @viewAll="onRecommendViewAll"
+      />
+      <goods-index v-if="tabType === 1" />
+    </div>
+
+    <!-- tab 側欄 -->
+    <div v-show="tabType === 2" class="tabsMenu" :style="{height:tabsMenuHeight+'px',...stickyTopStyle}">
+      <div class="tabsMenuList" ref="tabsMenu">
+        <div ref="tabsMenuItem" :class="{firstItem:true, active:selectedIndex === index}" :key="index" v-for="(item, index) in menuList">
+          <div class="classify" :class="{firstActive:selectedIndex === index}" @click="onSelectedMenu({ index })">
+            <div class="ellipsis2">
+              <img src="./img/discount.png" class="icon" v-if="item.isDiscount || item.isBuyGift || item.isOldDiscount || item.isSeckill" />{{item.classifyName}}
+            </div>
+            <span v-if="!item.isLeaf" :class="`expand-one ${closeClassify?'close':''}`">
+              <svg-icon v-if="selectedIndex == index" icon-class="mf_icon_arrow_up" class="color999" />
+            </span>
+          </div>
+          <template v-if="selectedIndex === index && !closeClassify &&(item.children.length || item.products.length)">
+            <div :class="`classify ${secondSelectedIndex === sKey ?'active':''}`"
+              v-for="(secondClassify,sKey) in item.children" @click="onSelectedSecondMenu({index: sKey})">
+              <div class="ellipsis2">
+                {{secondClassify.classifyName}}
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <div v-show="tabType === 2" class="tabsList" ref="tabsList" :style="{height:tabsMenuHeight+submitHeight+'px'}">
+      <div class="wrap-fixed" ref="wrapper">
+        <div class="third-card-list">
+          <template v-if="thirdClassifyList.length">
+            <div class="third-card-parent" ref="tag">
+              <div class="tag-list" ref="tagList">
+                <div :id="'third-'+tIndex" :class="`tag ${tIndex == thirdSelectedIndex?'active':''}`"
+                  @click="onSelectedThirdMenu(tIndex, third)" v-for="(third,tIndex) in thirdClassifyList">
+                  {{third.classifyName}}
+                </div>
+              </div>
+
+              <div v-if="showThirdExpand" :class="`expand ${expandThird?'active':''}`" @click="expandThirdClassify">
+                <svg-icon icon-class="mf_icon_arrow_up" />
+              </div>
+            </div>
+            <div class="expand-bg" v-if="expandThird" @click="expandThird=!expandThird">
+              <div class="expand-bg-parent">
+                <div class="tag-item-class">
+                  <div :class="`tag ${tIndex == thirdSelectedIndex?'active':''}`"
+                    @click.stop="onSelectedThirdMenu(tIndex, third)" v-for="(third,tIndex) in thirdClassifyList">
+                    {{third.classifyName}}</div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <div class="mk-store-sort" ref="sort" v-if="menuList.length">
+            <span @click="sortProduct('discount')"
+              :class="{active: marketSortProductType === 1}">力度</span>
+            <span @click="sortProduct('sale')" :class="{active: marketSortProductType === 2}">銷量</span>
+            <span class="triangle" @click="sortProduct('price')" :class="{
+                active: marketSortProductType === 3 || marketSortProductType === 4,
+                up: marketSortProductType === 3,
+                down: marketSortProductType === 4
+              }">價格</span>
+            <div class="discount-tip" v-if="discountLimit >= 0">
+              <img src="./img/tip.png" class="tipicon" />
+              活動商品每單限購{{discountLimit}}份，超出的商品恢復原價
+            </div>
+            <div class="discount-tip" v-else-if="isSeckillMenu">
+              <img src="./img/tip.png" class="tipicon" />
+              秒殺活動商品超出限購部分數量將按照原價購
+            </div>
+          </div>
+        </div>
+      </div>
+      <virtual-list style="overflow-y: auto;" :style="{height: '100%'}" :data-key="'uid'"
+        :data-sources="marketStoreProductArr" :data-component="itemComponent" @scroll="onScrollContainer"
+        ref="virtual" id="virtual" :keeps="25" />
+    </div>
+
+    <!-- 底部购物车 -->
+    <bottom-cart ref="pocketRef" v-if="showPop" @onSubmit="onSubmit('store')" :submitting="submitting" />
+    <!-- 門店詳情 -->
+    <market-store-detail :marketDetailDialog="marketDetailDialog" />
+    <store-takeout-time-components />
+    <!-- 店鋪打烊時，展示附近門店 非分享狀態顯示-->
+    <!-- <near-store ref="nearStore" v-if="!$route.query.isShare" /> -->
+    <!-- 超出配送范围，展示附近門店和更換地址 非分享狀態顯示-->
+    <out-delivery-area ref="outArea" v-if="!$route.query.isShare" />
+    <browse-item />
+    <all-recommend-goods ref="allRecGoods" />
+  </main>
+</div>

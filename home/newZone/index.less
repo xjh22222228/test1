@@ -1,0 +1,52 @@
+.new-home3 {
+  position: relative;
+  .new-bg {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+  }
+  .bg-animate {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 126px;
+    pointer-events: none;
+  }
+  /deep/.safe-top {
+    background-color: transparent;
+  }
+  // 不显示新人
+  &.noShowNewUser {
+    .marketHomeTopBanner {
+      margin-top: 0;
+    }
+    .new-container {
+      padding-top: 0;
+    }
+    .bg-animate {
+      display: none;
+    }
+  }
+  .new-main {
+    z-index: 5;
+    position: relative;
+  }
+  .new-container {
+    z-index: 9;
+    position: relative;
+    // padding-top: 155px;
+  }
+  .new-empty-box{
+    height:165px;
+  }
+  .marketHomeTopBanner,.marketHomeMidBanner {
+    padding: 0 12px;
+    margin-top: 12px;
+  }
+  /deep/.search-bar2 {
+    .sbox {
+      border-width: 0;
+    }
+  }
+}

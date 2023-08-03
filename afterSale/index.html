@@ -1,0 +1,201 @@
+<section class="after-sale3 mescroll">
+  <div class="position-sticky">
+    <div :class="safeClass"></div>
+    <nav-bar title="申請售後" className="type1" background-color="#fff" :allway-show="true" :delta="true" />
+  </div>
+
+  <div class="after-box">
+    <div class="sale-info">
+      <div class="storename">
+        <div class="name">{{ info.storeName }}</div>
+        <div class="gift-product" @click="onViewGift()" v-if="giftProducts.length > 0">
+          贈送商品 {{ giftProducts.length }}件
+          <img src="../order/img/arrow.png" class="arrow" />
+        </div>
+      </div>
+      <div class="sys-tip">推薦聯繫商家，提高處理效率</div>
+      <div class="return-amt">
+        <div class="rleft">退款商品</div>
+        <div class="rright">
+          <div class="amount">
+            <span class="amt-l">退款金額</span>
+            <span class="unit">MOP</span>
+            <span class="amt">{{ returnAmt }}</span>
+          </div>
+          <div class="tips">
+            <span v-if="refundConsumptionAmtn">
+              <template v-if="refundMallCouponCount"> {{ $t('gold_refund_tips_with_mall_coupon', { amount: refundConsumptionAmtn, count: refundConsumptionQty, mallCouponCount: refundMallCouponCount }) }}
+              </template>
+              <template v-else>{{ $t('gold_refund_tips', { amount: refundConsumptionAmtn, count: refundConsumptionQty }) }}</template>
+            </span>
+            <span v-else-if="refundMallCouponCount">
+              {{ $t('refund.refundMallCoupon', { mallCouponCount: refundMallCouponCount }) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="goods-box">
+        <div class="goods-item" v-for="(item, idx) of productList" :key="item.orderProductId">
+          <div class="checkbox" @click="onCheck(idx)" :class="{
+            checked: item.__checked__,
+            disable: item.__disable__
+          }"></div>
+
+          <div class="left">
+            <img :src="item.productImg |imgCompress" class="poster">
+          </div>
+          <div class="right ellipsis">
+            <div class="ellipsis">
+              <img :src="icon" class="icon" v-for="icon of item.activityIconList" :key="icon" />
+              <span class="pname ellipsis">{{ item.productName }}</span>
+            </div>
+            <div class="g-bottom">
+              <div class="pqty">x{{ item.count }}</div>
+              <van-stepper async-change class="cart-stepper" @minus="onMinus" @plus="onPlus(idx)" :class="{
+                  removeInput: !item.__flagClick__ && item.count > 1,
+                  removeStepper: (item.id === PLASTIC_BAG_ID && productList.length === 2) && !supportPart
+                }" v-model="item.__qty__" :disable-minus="disableMinus(item)" :disable-input="true"
+                :disabled="item.__disabled__" :min="1" :max="item.count" />
+            </div>
+          </div>
+        </div>
+
+        <div class="goods-item" v-for="(item, idx) of noProductList" :key="item.orderProductId">
+          <div class="checkbox" :class="{
+            checked: item.__checked__,
+            disable: item.__disable__,
+            noChecked: true
+          }"></div>
+
+          <div class="left">
+            <img :src="item.productImg" class="poster">
+          </div>
+          <div class="right ellipsis">
+            <div class="ellipsis">
+              <span class="pname ellipsis">{{ item.productName }}</span>
+            </div>
+            <div class="g-bottom">
+              <div class="pqty">x{{ item.count }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="gline"></div>
+      <div class="amt-wrapper">
+        <!-- <div class="amt-item" :class="{deliveryPart: !isRefundDelivery}">
+          <div class="aleft">
+            <span class="return-type">打包費<svg-icon @click.native="openExplain(1)" icon-class="mf_icon_order_explain2" class="icon" /></span>
+            <div class="stip" v-if="isRefundDelivery">打包費</div>
+            <div class="stip no-refund" v-else>部分退，打包費不退回</div>
+          </div>
+          <div class="aright">
+            <span class="unit">MOP</span>
+            <span class="amt">{{ info.plasticBagFee }}</span>
+          </div>
+        </div> -->
+
+        <div class="amt-item" :class="{deliveryPart: !isRefundDelivery}" v-if="$$(marketOrderInfo,'orderInfo','deliveryType') !== 3">
+          <div class="aleft">
+            <span class="return-type">配送費
+              <svg-icon @click.native="openExplain(2)" icon-class="mf_icon_order_explain2" class="icon" />
+            </span>
+            <div class="stip" v-if="isRefundDelivery">配送費</div>
+            <div class="stip" v-else>部分退，基礎配送費不退回</div>
+          </div>
+          <div class="aright">
+            <span class="unit">MOP</span>
+            <span class="amt">{{ info.deliveryFee }}</span>
+          </div>
+        </div>
+
+        <div class="amt-item" v-if="platformCommissionData.platformCommission">
+          <div class="aleft">
+            <span class="return-type">{{ platformCommissionData.platformCommissionLabel }}</span>
+            <div class="stip" v-if="isRefundDelivery">{{ platformCommissionData.platformCommissionLabel }}</div>
+            <div class="stip" v-else>部分退，{{ platformCommissionData.platformCommissionLabel }}不退回</div>
+          </div>
+          <div class="aright">
+            <span class="unit">MOP</span>
+            <span class="amt">{{ platformCommissionData.platformCommission }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="call-box">
+        <svg-icon icon-class="_mf_icon_phone" class="icon" @click.native="handlePhoneCall" />
+        <span class="call" @click="handlePhoneCall">聯繫商家</span>
+      </div>
+    </div>
+
+    <div class="return-reason">
+      <div class="reason-top">
+        <div class="tleft">退款原因</div>
+        <div class="tright" @click="openReason">
+          <span class="required">*(必選)</span>
+          <span class="reason-txt" v-if="reason">{{ reason }}</span>
+          <template v-else>請選擇</template>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <div class="input-box">
+        <textarea ref="textarea" class="input-text" placeholder="請補充描述，有助於商家更好地為你處理售後問題" :maxlength="100"
+          v-model.trim="remark" @focus="onTextareaFocus">
+        </textarea>
+
+        <div class="img-box">
+          <div class="img-item" v-for="(img, idx) of imgs" :key="img"
+            :style="{backgroundImage: `url(${imgCompress(img)})`}">
+            <div class="close" @click="removeImg(idx)"></div>
+          </div>
+          <div class="img-item uploadimg" v-if="imgs.length < maxUpload" @click="onUpload">
+            <img src="./img/upload2.png" class="img-post">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-bar-box">
+    <div class="submit-bar">
+      <div>
+        <div class="amount-wrapper" :class="{ sm: refundConsumptionAmtn }">
+          <span class="al">退款金額</span>
+          <span class="unit">MOP</span>
+          <span class="amt">{{ returnAmt }}</span>
+          <span class="icon-wrapper" @click="onIconClick">
+            <svg-icon icon-class="mf_icon_order_explain2" class="tips-icon" />
+          </span>
+        </div>
+        <div class="stips">
+          <span v-if="refundConsumptionAmtn">
+            <template v-if="refundMallCouponCount"> {{ $t('gold_refund_tips_with_mall_coupon', { amount: refundConsumptionAmtn,
+              count: refundConsumptionQty, mallCouponCount: refundMallCouponCount }) }}
+            </template>
+            <template v-else>{{ $t('gold_refund_tips', { amount: refundConsumptionAmtn, count: refundConsumptionQty })
+              }}</template>
+          </span>
+          <span v-else-if="refundMallCouponCount">
+            {{ $t('refund.refundMallCoupon', { mallCouponCount: refundMallCouponCount }) }}
+          </span>
+        </div>
+      </div>
+      <div class="submit-btn" @click="submitReturn">申請退款</div>
+    </div>
+  </div>
+
+  <reason-select ref="reason" @ok="handleOkReason" />
+  <explain-dialog ref="explain" />
+  <view-gift-popup ref="viewGift" title="退活動商品，所有贈品都需退回" />
+  <MallCouponPopup
+    ref="mallCouponPopup"
+    title="商品券有效期提醒"
+    confirmButtonText="繼續退款"
+    @confirm="handleMallCouponPopupConfirm"
+    @cancel="handleMallCouponPopupCancel"
+    duration="0.1"
+    :close-on-click-overlay="false"
+  >
+    <MallCouponList :list="refundOtherInfo" />
+  </MallCouponPopup>
+</section>

@@ -1,0 +1,131 @@
+.goods-horizontal3 {
+  margin: 12px 0 8px 0;
+  overflow: hidden;
+  overflow-x: auto;
+  display: flex;
+  user-select: none;
+  .goods-top-box {
+    flex: 1;
+    &:not(&:nth-child(1)) {
+      margin-left: -4px;
+      .goods-wrapper {
+        padding-left: 0;
+      }
+    }
+  }
+  .goods-wrapper {
+    display: flex;
+    padding: 0 12px;
+    &:nth-child(1) {
+      margin-bottom: 12px;
+    }
+    .goods-item {
+      min-width: 192px;
+      width: 192px;
+      padding: 8px 8px 12px 8px;
+      background-color: #fff;
+      border-radius: 12px;
+      border: .5px solid #F0F0F0;
+      text-align: left;
+      &:nth-child(1) {
+        margin-right: 8px;
+      }
+      .top-bar {
+        max-height: 56px;
+        display: flex;
+      }
+      .tleft {
+        min-width: 56px;
+        min-height: 56px;
+        width: 56px;
+        height: 56px;
+        background-size: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .tright {
+        height: 56px;
+        min-height: 56px;
+        padding-left: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        .pname {
+          color: #333;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 17px;
+        }
+        .bbar {
+          display: flex;
+          .bleft {
+            width: 0;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+        }
+        .unit {
+          font-size: 11px;
+          color: #F54747;
+          font-weight: bold;
+        }
+        .amt {
+          font-size: 16px;
+          font-weight: bold;
+          color: #F54747;
+        }
+        .discount-amt {
+          margin-left: 2px;
+          font-size: 11px;
+          color: #ccc;
+        }
+      }
+    }
+
+    .store-bar {
+      margin-top: 12px;
+      padding-top: 8px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #F0F0F0;
+      .sleft {
+        min-width: 28px;
+        min-height: 28px;
+        width: 28px;
+        height: 28px;
+        background-size: 100%;
+        border-radius: 50%;
+      }
+      .sright {
+        padding-left: 6px;
+        color: #333;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .view-more {
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+    width: 50px;
+    .arrow-icon {
+      min-width: 14px;
+      min-height: 14px;
+      width: 14px;
+      height: 14px;
+      background-image: url("../new-coupon/img/arrow.png");
+      background-size: 100%;
+    }
+    .more-txt {
+      margin-left: 8px;
+      color: #666;
+      font-size: 12px;
+    }
+  }
+}

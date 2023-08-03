@@ -1,0 +1,26 @@
+<div class="goods-zone3" id="goods-zone" v-show="finish && (tabs.length > 0 || newUser)">
+  <div v-if="newUser" class="new-user-box">
+    <img src="./img/new-title.png" class="new-user" />
+  </div>
+  
+  <goods-tab v-else />
+
+  <div class="goods-wrapper2 p-tab">
+    <goods-group ref="goods" v-slot:default="{list, loading, next}" :http="getData" :init="false" @finish="handleFinish">
+      <!-- 门店 -->
+      <template v-if="tabData.type === 1">
+        <near-item v-for="(item, idx) of list" :key="idx" :item="item" />
+      </template>
+
+      <!-- 商品 type = 2, 必须放在 else -->
+      <template v-else>
+        <goods-item v-for="(item, idx) of list" :key="idx" :data="item" :new-user="newUser" />
+      </template>
+
+      <!-- 无数据 -->
+      <div class="no-data" v-if="list.length <= 0">
+        <goods-no-data />
+      </div>
+    </goods-group>
+  </div>
+</div>

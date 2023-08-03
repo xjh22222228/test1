@@ -1,0 +1,38 @@
+<div class="history-keyword2" v-if="!showData">
+  <!-- 搜索关键字 -->
+  <!-- <div class="hot-tag" v-if="!showData && hotDataList.length">
+    <div class="flex-center">
+      <svg-icon icon-class="icon_hot2"></svg-icon>
+      <span class="hot-title">熱門搜索</span>
+    </div>
+    <div class="hot-box">
+      <div
+        class="hot-item ellipsis"
+        v-for="item of hotDataList"
+        :key="item.id"
+        @click="handleClickHot(item)"
+        :style="{
+          backgroundColor: item.backgroundColor,
+          color: item.fontColor,
+          borderColor: item.borderColor
+        }"
+      >
+        {{ item.__name__ }}
+      </div>
+    </div>
+  </div> -->
+  <!-- 搜索关键字历史记录 -->
+  <div class="history" v-if="historyKeywords.length">
+    <div class="title">
+      <span>搜索歷史</span>
+      <div @click="handleClear">
+        <svg-icon icon-class="mf_icon_search_delete" class="icon-del" />
+      </div>
+    </div>
+    <div class="keywords">
+      <span @click="searchHistory(item)"
+            v-for="item in historyKeywords"
+            :key="item">{{item}}</span>
+    </div>
+  </div>
+</div>

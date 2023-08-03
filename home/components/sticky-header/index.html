@@ -1,0 +1,18 @@
+<div class="market-home-sticky">
+  <div :class="[{styleType2: styleType === '2'}, safeClassName, 'market-sticky-head']">
+    <div class="left">
+      <svg-icon icon-class="mf_icon_arrow_left_b" class="larrow" @click.native="onBack" />
+      <svg-icon icon-class="mf_icon_location" class="location-icon" @click.native="goAddress" />
+    </div>
+
+    <div class="right" @click="goSearch">
+      <div class="sbox">
+        <div class="sicon"></div>
+        <div class="sval">搜索商品</div>
+        <div class="sbtn">{{ $t('common.search') }}</div>
+      </div>
+    </div>
+  </div>
+
+  <slot />
+</div>

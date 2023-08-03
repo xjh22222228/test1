@@ -1,0 +1,116 @@
+<div class="market-explain3" v-if="showDialog">
+  <div class="explain-box">
+    <div class="explain-main">
+      <div class="title">{{ title }}</div>
+
+      <div class="e-item item-total" v-if="totalAmt !== null">
+        <div class="left font14">總計</div>
+        <div class="right">
+          <span class="font14">MOP&nbsp;</span>
+          <span class="amt">{{ totalAmt }}</span>
+        </div>
+      </div>
+
+      <template v-if="type === '1'">
+        <div class="e-item" v-if="baseAmt !== null && baseAmt > 0">
+          <div class="left font14">基礎包裝服務</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ baseAmt }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="plasticBagQty !== null && plasticBagQty > 0">
+          <div class="left font14">膠袋總數量</div>
+          <div class="right">
+            <span class="font11">x</span>
+            <span class="amt">{{ plasticBagQty }}</span>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="type === '2'">
+        <div class="e-item delivery-free" v-if="deliveryFreeAmt !== null && deliveryFreeAmt > 0">
+          <div class="left font14">活動減免</div>
+          <div class="right">
+            <span class="font11">-MOP&nbsp;</span>
+            <span class="amt">{{ deliveryFreeAmt }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="baseAmt !== null && baseAmt > 0">
+          <div class="left font14">基礎運費</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ baseAmt }}</span>
+          </div>
+        </div>
+
+
+        <div class="e-item" v-if="weightAmt !== null && weightAmt > 0">
+          <div class="left font14">超重運費{{overBaseWeight ? `（超出${overBaseWeight}kg）` : ''}}</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ weightAmt }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="freshDeliveryFee !== null && freshDeliveryFee > 0">
+          <div class="left font14">生鮮運費</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ freshDeliveryFee }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="distanceDeliveryFee !== null && distanceDeliveryFee > 0">
+          <div class="left font14">超距運費</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ distanceDeliveryFee }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="passBridgeDeliveryFee !== null && passBridgeDeliveryFee > 0">
+          <div class="left font14">跨橋運費</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ passBridgeDeliveryFee }}</span>
+          </div>
+        </div>
+
+        <div class="e-item" v-if="plusAmt !== null && plusAmt > 0">
+          <div class="left font14">特殊時段加收</div>
+          <div class="right">
+            <span class="font11">MOP</span>
+            <span class="amt">{{ plusAmt }}</span>
+          </div>
+        </div>
+      </template>
+
+      <div class="explain-content">
+        <div class="ext">說明</div>
+        <template v-if="type==1">
+          <div class="ext-item" v-for="(content, idx) of explainList" :key="content">
+            <div class="eleft">{{ idx + 1 }}、</div>
+            <div class="eright">{{ content }}</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="ext-item">
+            <div class="eleft">1、</div>
+            <div class="eright">
+              {{msg.marketDeliveryFeePaper}}
+            </div>
+          </div>
+          <div class="ext-item" v-if="[1,4].includes(deliveryType)">
+            <div class="eleft">2、</div>
+            <div class="eright">{{deliveryType == 1?msg.courierPaper:msg.farOrderPaper}}</div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <div class="close" @click="onClose"></div>
+  </div>
+</div>

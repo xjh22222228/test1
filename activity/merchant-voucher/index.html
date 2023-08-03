@@ -1,0 +1,9 @@
+<PolymerizationComponents ref="component" :config.sync="mescroll" @historyBack="back" :navShow="navShow">
+  <div class="market-merchant-voucher">
+    <template v-for="(item , index) in inList">
+      <!-- <div class="outData" v-if="midLabelShow(index)"> 超出當前配送範圍店鋪 </div> -->
+      <GoodsComponents :key="item.id" :item.sync="item" />
+    </template>
+  </div>
+  <loginComponent ref="login" />
+</PolymerizationComponents>

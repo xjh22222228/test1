@@ -1,0 +1,65 @@
+  <van-popup :safe-area-inset-bottom="true"
+             class="marketOrderAddressPopup"
+             closeable
+             v-model="addressPopup"
+             position="bottom">
+    <div class="popup-title">選擇收貨地址</div>
+    <div class="list">
+      <van-cell @click="onSelectAddress(item)"
+                :style="`order:${$$(marketOrderOther,'selectedAddress','id') == item.id?0:index+1}`"
+                v-for="(item,index) in marketOrderAddressData.userAddressList"
+                :title="item.address+item.houseNum">
+        <template #icon>
+          <svg-icon icon-class="radio_check"
+            :class="{'icon-left':true,'show':$$(marketOrderOther,'selectedAddress','id') == item.id}"/>
+        </template>
+        <template #right-icon>
+          <svg-icon icon-class="icon_system_edit"
+                    class="icon-right"
+                    @click.native.stop="onEditAddress(item.id)" />
+        </template>
+        <template #label>
+          <p>
+            <span>{{item.linkman}}</span>
+            <span>{{item.gender == 1 ? '(先生)':'(女士)'}}</span>
+            <span style="margin-left:12px">+{{item.phonePre}}</span>
+            <span style="margin-left:6px">{{item.phone}}</span>
+          </p>
+        </template>
+      </van-cell>
+      <div  class="out-area"
+            :style="`order:${1+marketOrderAddressData.userAddressList.length}`"
+            v-if="marketOrderAddressData.outUserAddressList && marketOrderAddressData.outUserAddressList.length">超出配送範圍地址</div>
+      <van-cell class="out"
+                :style="`order:${oindex+2+marketOrderAddressData.userAddressList.length}`"
+                v-for="(item,oindex) in marketOrderAddressData.outUserAddressList"
+                icon="checked"
+                :title="item.houseNum+item.address">
+        <template #icon>
+          <svg-icon icon-class="radio_check"
+                    :class="{'icon-left':true,'show':$$(marketOrderOther,'selectedAddress','id') == item.id}"/>
+        </template>
+        <template #right-icon>
+          <svg-icon icon-class="icon_system_edit"
+                    class="icon-right"
+                    @click.native.stop="onEditAddress(item.id)" />
+        </template>
+        <template #label>
+          <p>
+            <span>{{item.linkman}}</span>
+            <span>{{item.gender == 1 ? '(先生)':'(女士)'}}</span>
+            <span style="margin-left:12px">+{{item.phonePre}}</span>
+            <span style="margin-left:6px">{{item.phone}}</span>
+          </p>
+        </template>
+      </van-cell>
+      <div class="empty" v-if="!marketOrderAddressData.userAddressList.length && !marketOrderAddressData.outUserAddressList.length">
+        <img src="@/assets/images/defaultpage_noposition@2x.png"/>
+        <div class="label">您還沒有設置收貨地址</div>
+        <div class="add-button" @click="onAddAddress">新增地址</div>
+      </div>
+    </div>
+    <div class="add-new-button"
+                v-if="marketOrderAddressData.userAddressList.length || marketOrderAddressData.outUserAddressList.length"
+                @click="onAddAddress">新增地址</div>
+  </van-popup>

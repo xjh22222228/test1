@@ -1,0 +1,47 @@
+<div :class="`marketComment ${type} ${commentData.showComment?'':'empty'}`">
+    <div v-if="type=='store'" class="storeCommentData" :class="commentData.showComment?'':'empty'">
+       
+        <template>
+          <!-- 商超 -->
+          <div v-if="commentData.commentFlag == 2 " class="card-class"  style="border-bottom: 8px solid #F5F5F7;">
+             <van-grid :column-num="2" :border="false">
+              <van-grid-item>
+                <div class="rate divider-r-border">
+                    <div class="top color-org">{{commentData.storeMarkNum}}</div>
+                    <div class="bottom">綜合評分</div>
+                  </div>
+              </van-grid-item>
+              <van-grid-item>
+                <div class="rate">
+                  <div class="top">{{commentData.commentNum < 9999 ? commentData.commentNum :'9999+'}}</div>
+                  <div class="bottom">評論數</div>
+                </div>
+              </van-grid-item>
+               </van-grid>
+          </div>
+          <div v-if="commentData.commentFlag == 1" class="recommentEnptyTitle" style="border-bottom: 8px solid #F5F5F7;">
+            <div class="customer-no-detial-class" > 商家最近評價不足，暫無評分 </div>
+        </div>
+          <div class="flex-center-tab" v-if="commentData.commentList.length">
+                  <span  :class="{'switch-label-class':true,active:param.isImg === 0}" @click="changeType(0)">全部評論</span>
+                  <span :class="{'switch-label-class':true,active:param.isImg === 1}" @click="changeType(1)">只看有圖</span>
+          </div>
+          <div class="recommentEnpty" v-if="!commentList.length && commentData.finish">
+              <img :src="nocomment">
+              <div class="empty-tip">暫無評價</div>
+          </div>
+          <div class="customer-detial-class" v-if="commentList.length">
+            <van-list
+            style="width:100%;"
+            v-model="commentData.loading"
+            :finished="!computeParam.next"
+            @load="searchAction"
+            >
+                <recomment-data v-for="(item,index) of commentList" :key="item.id + '-'+ index" :item="item"></recomment-data>
+            
+            </van-list>
+            <div class="upwarp-nodata" v-if="!computeParam.next && commentData.finish && commentList.length"><img :src="mfoodUrl"/></div>  
+          </div>
+        </template>
+    </div>
+</div>

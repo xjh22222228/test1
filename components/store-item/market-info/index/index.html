@@ -1,0 +1,61 @@
+<div class="market-info">
+  <div class="storeIno">
+    <div class="titleNew">
+      <span class="title">門店地址</span>
+    </div>
+    <div class="adds">
+      <div class="left">
+        <div class="address ellipsis2">{{marketStoreDetail.address}}</div>
+        <div class="distance">距離你 {{$$km(marketStoreDetail.distance)}}</div>
+      </div>
+      <div class="right">
+        <div class="icon" @click="openLocation(marketStoreDetail.address)">
+          <svg-icon icon-class="store_info_address" class="size24" />
+          <span>導航</span>
+        </div>
+        <div class="online"></div>
+        <div class="icon" @click="handlePhoneCall">
+          <svg-icon icon-class="store_info_phone" class="size24" />
+          <span>電話</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="license" v-if="marketStoreDetail.registerNumber && marketStoreDetail.registerType != 0">
+    <div class="left">
+      <svg-icon icon-class="icon_order_num" class="license-icon" />
+      {{ marketStoreDetail.registerString }}
+    </div>
+    <div class="right">{{ marketStoreDetail.registerNumber }}</div>
+  </div>
+
+  <div class="storeIno">
+    <div class="titleNew">
+      <span class="title">營業時間</span>
+      <span :class="{'store-status':true,'close':!marketStoreDetail.businessType}">
+        {{marketStoreDetail.businessType?'營業中':'已打烊'}}
+      </span>
+    </div>
+    <div class="timesNew">
+      <div
+        class="item"
+        v-for="(item,index) in marketStoreDetail.takeoutTime"
+        :key="index"
+      >
+        <span v-if="item.weekDays[0] == 0">週日</span>
+        <span v-if="item.weekDays[0] == 1">週一</span>
+        <span v-if="item.weekDays[0] == 2">週二</span>
+        <span v-if="item.weekDays[0] == 3">週三</span>
+        <span v-if="item.weekDays[0] == 4">週四</span>
+        <span v-if="item.weekDays[0] == 5">週五</span>
+        <span v-if="item.weekDays[0] == 6">週六</span>
+        <div class="time">
+          <b v-if="item.storeTime && item.storeTime.length" v-for="(times,index)  in item.storeTime"
+          :key="index">{{times.startTime}} - {{times.endTime}}</b>
+          <b class="timeout" v-if="item.storeTime && !item.storeTime.length">休息</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

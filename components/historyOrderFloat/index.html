@@ -1,0 +1,106 @@
+<div class="market-order-float9">
+  <van-popup get-container="body"
+             :lockScroll="true"
+             v-model="state"
+             position="bottom"
+             class="historyOrderList3">
+    <div class="header">
+      <span class="title">訂單提醒</span>
+      <span @click="handleOrderList" class="right-in">
+            歷史訂單
+            <svg-icon icon-class="icon_order_h5" class="icon_arrow-in" />
+      </span>
+    </div>
+    <van-empty class="custom-image"
+               :image="orderEmpty"
+               description="暫無新訂單"
+               v-if="!distributionList.length" />
+    <div class="item">
+      <div
+				class="distributionList"
+				v-for="item in distributionList"
+				:key="item.tradeId"
+			>
+        <van-cell @click="handleOrderInfo(item)">
+          <template #title>
+            <div class="title-wrapper">
+				<van-image v-if="item.storeIcon" class="store-img" fit="contain" :src="item.storeIcon" />
+				<div class="middle ellipsis">
+					<div class="orderName ellipsis">{{item.storeName}}</div>
+					<van-tag slot="num"
+						class="deliveryType type1"
+						v-if="item.deliveryType == 1">mFood送</van-tag>
+					<van-tag slot="num" class="deliveryType type2"
+						v-if="item.deliveryType == 2">商家自送</van-tag>
+					<van-tag slot="num"
+						class="deliveryType type2"
+						v-if="item.deliveryType == 3">自取</van-tag>
+					<van-tag slot="num"
+						class="deliveryType type2"
+						v-if="item.deliveryType == 4">遠程配送</van-tag>
+				</div>
+				<div class="right">
+					<div class="right-txt">
+						<span class="title">
+							{{ getTitle(item) }}
+						</span>
+						<span class="deliveryTime"
+									v-if="item.deliveryType != 3">預計送達 <b>{{item.deliveryTime}}</b></span>
+						<span class="deliveryTime"
+									v-if="item.deliveryType == 3">
+							<template v-if="item.takeFoodType==1 && item.orderStatus==1">
+								商家接單後確認自取時間
+							</template>
+							<template v-else>
+								取餐時間 <b>{{item.deliveryTime}}</b>
+							</template>
+						</span>
+					</div>
+					<svg-icon icon-class="icon_system_arrow_mini_right" class="icon-arrow-right" />
+				</div>
+            </div>
+          </template>
+        </van-cell>
+        <div class="makeup"
+             v-if="item.secondlyMsgStr">
+          <div class="makeIcon">
+            <svg-icon icon-class="mf_icon_order_alert"
+                      class="size16" />
+          </div>
+          <div class="makeInfo">
+            <div v-html="item.secondlyMsgStr"></div>
+            <div class="contact"><span @click="onCallService">致電客服 ></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </van-popup>
+
+  <div class="entry" @click="handleHistoryOrder" v-if="distributionList.length > 0">
+		<div class="arrow"></div>
+		<div class="left">
+			<img
+				v-for="item of beforeList"
+				:key="item.tradeId"
+				:src="item.storeIcon"
+				class="avatar"
+			/>
+		</div>
+		<div class="right">
+			<div class="htitle">{{ getTitle(orderInfo) }}</div>
+			<div class="hbottom">
+				<template v-if="orderInfo.deliveryType != 3">
+					預計送達 <span class="light">{{ orderInfo.deliveryTime }}</span>
+				</template>
+				<template v-else-if="orderInfo.deliveryType == 3">
+					<template v-if="orderInfo.takeFoodType==1 && orderInfo.orderStatus==1">
+						商家接單後確認自取時間
+					</template>
+					<template v-else>
+						取餐時間 <span class="light">{{orderInfo.deliveryTime}}</span>
+					</template>
+				</template>
+			</div>
+		</div>
+  </div>
+</div>
